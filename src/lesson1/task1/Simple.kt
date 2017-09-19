@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = 60*60*hours + 60*minutes + seconds
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = 60*60*hours+60*minutes+seconds
 
 /**
  * Тривиальная
@@ -68,7 +68,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (sagenes
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(grad: Int, min: Int, sec: Int): Double = (grad*Math.PI)/180+(min*Math.PI)/(180*60)+(sec* Math.PI)/(180*60*60)
+fun angleInRadian(grad: Int, min: Int, sec: Int): Double = grad*Math.PI/180+min*Math.PI/180*60+sec*Math.PI/180*60*60
 
 /**
  * Тривиальная
@@ -102,14 +102,7 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val year1 = initial + initial*percent*0.01
-    val year2 = year1 + year1*percent*0.01
-    val year3 = year2 + year2*percent*0.01
-    return year3
-
-
-}
+fun accountInThreeYears(initial: Int, percent: Int): Double = initial*pow(1+percent.toDouble()/100,3.0)
 
 /**
  * Простая
@@ -119,8 +112,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  */
 fun numberRevert(number: Int): Int {
     val first = number % 10
-    val cecond = (number % 100) / 10
+    val second = (number % 100) / 10
     val third = number/100
-    return first*100+cecond*10+third
+    return first*100+second*10+third
 
 }
