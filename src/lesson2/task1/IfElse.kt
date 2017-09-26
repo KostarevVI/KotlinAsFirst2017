@@ -36,15 +36,11 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String {
-    var word: String
-    word = age.toString();
-    if (age % 10 in 5..9 || age % 10 == 0 || age % 100 in 11..19)
-        word += " лет"
-    else
-        if (age % 10 == 1)
-            word += " год"
-        else word += " года"
-    return word
+    when {
+        age % 10 in 5..9 || age % 10 == 0 || age % 100 in 11..19 -> return "$age лет"
+        age % 10 == 1 -> return "$age год"
+        else -> return "$age года"
+    }
 }
 
 /**
@@ -57,18 +53,17 @@ fun ageDescription(age: Int): String {
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
                    t3: Double, v3: Double): Double {
-    var halfTime: Double = 0.0
-    var s1 = t1 * v1
-    var s2 = t2 * v2
-    var s3 = t3 * v3
+    var halfTime = 0.0
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    val s3 = t3 * v3
 
-    var halfS = (s1 + s2 + s3) / 2
-    if (halfS <= s1)
-        halfTime = halfS / v1
-    else if (halfS > s1 && halfS <= s2 + s1)
-        halfTime = t1 + ((halfS - s1) / v2)
-    else if (halfS > s2 + s1)
-        halfTime = t1 + t2 + ((halfS - s1 - s2) / v3)
+    val halfS = (s1 + s2 + s3) / 2
+    when {
+        halfS <= s1 -> halfTime = halfS / v1
+        halfS > s1 && halfS <= s2 + s1 -> halfTime = t1 + ((halfS - s1) / v2)
+        halfS > s2 + s1 -> halfTime = t1 + t2 + ((halfS - s1 - s2) / v3)
+    }
     return halfTime
 }
 
@@ -84,7 +79,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var who: Int = 0
+    var who = 0
     if (rookX1 == kingX || rookY1 == kingY) who = 1
     if (rookX2 == kingX || rookY2 == kingY)
         if (who == 1) who = 3
@@ -105,7 +100,7 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    var who: Int = 0
+    var who = 0
     if (rookX == kingX || rookY == kingY) who = 1
     if (abs(kingX - bishopX) == abs(kingY - bishopY))
         if (who == 1) who = 3
@@ -122,23 +117,15 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    var answer: Int = -1
-    var max: Double = 0.0
-    if (a >= b && a >= c)
-        max = a
-    else if (b >= a && b >= c)
-        max = b
-    else if (c >= a && c >= b)
-        max = c
-
+    val max = max(max(a, b), c)
     if (a + b > c && a + c > b && b + c > a)
-        if (max * max < a * a + b * b + c * c - max * max)
-            answer = 0
-        else if (max * max == a * a + b * b + c * c - max * max)
-            answer = 1
-        else if (max * max > a * a + b * b + c * c - max * max)
-            answer = 2
-    return answer
+        when {
+            max * max < a * a + b * b + c * c - max * max -> return 0
+            max * max == a * a + b * b + c * c - max * max -> return 1
+            max * max > a * a + b * b + c * c - max * max -> return 2
+        }
+    else return -1
+    return 0 //////////////без этого прога не хочет компилироваться. говорит, что ожидает return в главном цикле
 }
 
 /**
@@ -150,20 +137,16 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    var answer: Int = -1
-    if (abs(c - b) < abs(d - a) && b < c)
-        answer = -1
-    else if (abs(c - b) > abs(d - a) && d < a)
-        answer = -1
-    else if (b == c || a == d) answer = 0
-    else if (c == a || d == b)
-        if (abs(b - a) > abs(d - c)) answer = d - c
-        else {
-            answer = b - a
-        }
-    else if (c > a && d < b) answer = d - c
-    else if (a > c && b < d) answer = b - a
-    else if (c > a && b < d) answer = b - c
-    else if (a > c && d < b) answer = d - a
-    return answer
+    when {
+        abs(c - b) < abs(d - a) && b < c -> return -1
+        abs(c-b) > abs(d-a) && d < a -> return -1
+        b == c || a == d -> return 0
+        c == a || d == b -> if (abs(b - a) > abs(d - c)) return d - c
+                            else return b - a
+        c > a && d < b -> return d - c
+        a > c && b < d -> return b - a
+        c > a && b < d -> return b - c
+        a > c && d < b -> return d - a
+    }
+    return 0 ///////////////ЧТО??????
 }
