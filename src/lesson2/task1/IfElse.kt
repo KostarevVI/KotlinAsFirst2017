@@ -79,12 +79,15 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var who = 0
-    if (rookX1 == kingX || rookY1 == kingY) who = 1
-    if (rookX2 == kingX || rookY2 == kingY)
-        if (who == 1) who = 3
-        else who = 2
-    return who
+    val firstRookAttacks = rookX1 == kingX || rookY1 == kingY
+    val secondRookAttacks = rookX2 == kingX || rookY2 == kingY
+    return when {
+        firstRookAttacks && secondRookAttacks -> 3
+        firstRookAttacks -> 1
+        secondRookAttacks -> 2
+        else -> 0
+    }
+
 }
 
 /**
@@ -100,12 +103,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
                           bishopX: Int, bishopY: Int): Int {
-    var who = 0
-    if (rookX == kingX || rookY == kingY) who = 1
-    if (abs(kingX - bishopX) == abs(kingY - bishopY))
-        if (who == 1) who = 3
-        else who = 2
-    return who
+    val rookAttacks = rookX == kingX || rookY == kingY
+    val bishopAttacks = abs(kingX - bishopX) == abs(kingY - bishopY)
+    return when {
+        rookAttacks && bishopAttacks -> 3
+        bishopAttacks -> 2
+        rookAttacks -> 1
+        else -> 0
+    }
 }
 
 /**
@@ -117,15 +122,17 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val max = max(max(a, b), c)
+    val maxSide = max(max(a, b), c)
+    val minSide = min (min (a, b), c)
+    val midSide = a + b + c - minSide - maxSide
     if (a + b > c && a + c > b && b + c > a)
-        when {
-            max * max < a * a + b * b + c * c - max * max -> return 0
-            max * max == a * a + b * b + c * c - max * max -> return 1
-            max * max > a * a + b * b + c * c - max * max -> return 2
+        return when {
+            maxSide * maxSide < minSide * minSide + midSide * midSide -> 0
+            maxSide * maxSide == minSide * minSide + midSide * midSide -> 1
+            maxSide * maxSide > minSide * minSide + midSide * midSide -> 2
+            else -> -1
         }
-    else return -1
-    return 0 //////////////без этого прога не хочет компилироваться. говорит, что ожидает return в главном цикле
+    return -1
 }
 
 /**
@@ -139,14 +146,16 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     when {
         abs(c - b) < abs(d - a) && b < c -> return -1
-        abs(c-b) > abs(d-a) && d < a -> return -1
+        abs(c - b) > abs(d - a) && d < a -> return -1
         b == c || a == d -> return 0
+        b == c && a < d && d < b -> return -1
+        a == b && c < b && b < c -> return -1
         c == a || d == b -> if (abs(b - a) > abs(d - c)) return d - c
-                            else return b - a
+            else return b - a
         c > a && d < b -> return d - c
         a > c && b < d -> return b - a
         c > a && b < d -> return b - c
         a > c && d < b -> return d - a
+        else -> return -1
     }
-    return 0 ///////////////ЧТО??????
 }
