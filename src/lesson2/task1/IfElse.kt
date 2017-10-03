@@ -150,6 +150,7 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         b == c || a == d -> return 0
         b == c && a < d && d < b -> return -1
         a == b && c < b && b < c -> return -1
+        a == b && c == d && a!=c -> return -1
         c == a || d == b -> if (abs(b - a) > abs(d - c)) return d - c
             else return b - a
         c > a && d < b -> return d - c
