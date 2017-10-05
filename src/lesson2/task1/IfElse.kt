@@ -123,7 +123,7 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
     val maxSide = max(max(a, b), c)
-    val minSide = min (min (a, b), c)
+    val minSide = min(min(a, b), c)
     val midSide = a + b + c - minSide - maxSide
     if (a + b > c && a + c > b && b + c > a)
         return when {
@@ -144,19 +144,15 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    when {
-        abs(c - b) < abs(d - a) && b < c -> return -1
-        abs(c - b) > abs(d - a) && d < a -> return -1
-        b == c || a == d -> return 0
-        b == c && a < d && d < b -> return -1
-        a == b && c < b && b < c -> return -1
-        a == b && c == d && a!=c -> return -1
-        c == a || d == b -> if (abs(b - a) > abs(d - c)) return d - c
-            else return b - a
-        c > a && d < b -> return d - c
-        a > c && b < d -> return b - a
-        c > a && b < d -> return b - c
-        a > c && d < b -> return d - a
-        else -> return -1
+    if (d < a || c > b) return -1
+    if (a <= c) {
+        when {
+            b <= d -> return abs(b - c)
+            else -> return abs(d - c)
+        }
+    }
+        when {
+            b <= d -> return abs(b - a)
+            else -> return abs(d - a)
     }
 }
