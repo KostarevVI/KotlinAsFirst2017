@@ -6,7 +6,27 @@ import java.lang.Math.*
 
 import kotlin.coroutines.experimental.suspendCoroutine
 
+/*fun lenght(n:Int):Int{
+    var i = 0
+    var newN = n
+    while(newN>0){
+        newN/=10
+        i++
+    }
+    return i
+}*/
 
+fun simpleNum(n: Int, m: Int): Int {
+    var a = n
+    var b = m
+    var c: Int
+    while (b != 0) {
+        c = a % b
+        a = b
+        b = c
+    }
+    return abs(a)
+}
 
 /**
  * Пример
@@ -86,7 +106,7 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var firstF = 1
     var secondF = 0
-    var c:Int
+    var c: Int
     for (i in 2..n) {
         c = firstF
         firstF += secondF
@@ -128,8 +148,8 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var maxD = n-1
-    while(n % maxD != 0) maxD--
+    var maxD = n - 1
+    while (n % maxD != 0) maxD--
     return maxD
 }
 
@@ -140,7 +160,12 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.п
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    when (simpleNum(n, m)) {
+        1 -> return true
+        else -> return false
+    }
+}
 
 /**
  * Простая
@@ -149,7 +174,15 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+
+    for (i in sqrt(m.toDouble()).toInt()..sqrt(n.toDouble()).toInt()) {
+        if (i * i in m..n) {
+            return true
+        }
+    }
+    return false
+}
 
 /**
  * Средняя
@@ -175,7 +208,13 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var newNumber = ""
+    for (i in n.toString().length - 1 downTo 0) {
+        newNumber += n.toString()[i]
+    }
+    return newNumber.toInt()
+}
 
 /**
  * Средняя
@@ -185,6 +224,83 @@ fun revert(n: Int): Int = TODO()
  * 15751 -- палиндром, 3653 -- нет.
  */
 fun isPalindrome(n: Int): Boolean = TODO()
+/*{
+    var firstP = ""
+    var secondP = ""
+    var initLine = n.toString()
+    var halfLen: Int
+    if (initLine.length % 2 == 0)
+        halfLen = initLine.length / 2
+    else halfLen = (initLine.length - 1) / 2
+    for (i in 0 until halfLen - 1) {
+        firstP += initLine[i]
+    }
+    for (i in initLine.length - 1 downTo initLine.length - halfLen) {
+        secondP += initLine[i]
+    }
+    if (firstP == secondP) return true
+    else return false
+}*/
+//^
+//|
+/*org.opentest4j.AssertionFailedError:
+at org.junit.jupiter.api.AssertionUtils.fail(AssertionUtils.java:48)
+at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:54)
+at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:33)
+at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:110)
+at lesson3.task1.Tests.isPalindrome(Tests.kt:185)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.lang.reflect.Method.invoke(Method.java:498)
+at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:389)
+at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:115)
+at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$6(TestMethodTestDescriptor.java:167)
+at org.junit.jupiter.engine.execution.ThrowableCollector.execute(ThrowableCollector.java:40)
+at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:163)
+at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:110)
+at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:57)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.lambda$execute$3(HierarchicalTestExecutor.java:83)
+at org.junit.platform.engine.support.hierarchical.SingleTestExecutor.executeSafely(SingleTestExecutor.java:66)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:77)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.lambda$null$2(HierarchicalTestExecutor.java:92)
+at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+at java.util.Iterator.forEachRemaining(Iterator.java:116)
+at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471)
+at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:418)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.lambda$execute$3(HierarchicalTestExecutor.java:92)
+at org.junit.platform.engine.support.hierarchical.SingleTestExecutor.executeSafely(SingleTestExecutor.java:66)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:77)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.lambda$null$2(HierarchicalTestExecutor.java:92)
+at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+at java.util.Iterator.forEachRemaining(Iterator.java:116)
+at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:481)
+at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:471)
+at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:418)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.lambda$execute$3(HierarchicalTestExecutor.java:92)
+at org.junit.platform.engine.support.hierarchical.SingleTestExecutor.executeSafely(SingleTestExecutor.java:66)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:77)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:51)
+at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:43)
+at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:170)
+at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:154)
+at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:90)
+at com.intellij.junit5.JUnit5IdeaTestRunner.startRunnerWithArgs(JUnit5IdeaTestRunner.java:62)
+at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)*/
+//Я понимаю, что вы не экстраненс, но что это значит?
 
 /**
  * Средняя
