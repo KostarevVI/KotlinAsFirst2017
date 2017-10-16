@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson4.task1
 
+import java.lang.Math.*
 import lesson1.task1.discriminant
 
 /**
@@ -106,14 +107,27 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var notAbs = 0.0
+    for (element in v)
+        notAbs += element*element
+    return sqrt(notAbs)
+}
 
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double{
+    var middleEl = 0.0
+    if(list.isEmpty()) return 0.0
+    else {
+        for (i in 0 until list.size)
+            middleEl += list[i]
+        return middleEl / list.size
+    }
+}
 
 /**
  * Средняя
@@ -123,7 +137,16 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double>
+{
+    if(list.isEmpty()) return list
+    else{
+        var middleEl = mean(list)
+        for(i in 0 until list.size)
+            list[i] -= middleEl
+        return list
+    }
+}
 
 /**
  * Средняя
@@ -132,7 +155,15 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double = TODO()
+fun times(a: List<Double>, b: List<Double>): Double{
+    if(a.isEmpty()) return 0.0
+    else{
+        var VecSum = 0.0
+        for(i in 0 until a.size)
+            VecSum += a[i]*b[i]
+        return VecSum
+    }
+}
 
 /**
  * Средняя
@@ -142,8 +173,17 @@ fun times(a: List<Double>, b: List<Double>): Double = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double = TODO()
-
+fun polynom(p: List<Double>, x: Double): Double {
+    var thing = 0.0
+    when(p.isEmpty()){                                           //выглядит глупо, но я решил попробовать что-то новое
+        true -> return thing
+        false -> {
+            for (i in 0 until p.size)
+                thing += p[i] * pow(x, i.toDouble())
+            return thing
+        }
+    }
+}
 /**
  * Средняя
  *
@@ -154,7 +194,17 @@ fun polynom(p: List<Double>, x: Double): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
+fun accumulate(list: MutableList<Double>): MutableList<Double>{
+    var listCopy = mutableListOf<Double>()
+    listCopy = list
+    for(i in 1 until list.size) {
+        var newElement = 0.0
+        for (j in 0..i)
+            newElement+=listCopy[j]
+        list[i]=newElement
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -163,7 +213,19 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int>{
+    var newN = n
+    val digList = mutableListOf<Int>()
+    while(newN!=1) {
+        for (i in 2..newN)
+            if ((newN / i.toDouble())% 1.0 == 0.0) {
+                digList.add(i)
+                newN /= i
+                break
+            }
+    }
+    return digList
+}
 
 /**
  * Сложная
@@ -171,7 +233,21 @@ fun factorize(n: Int): List<Int> = TODO()
  * Разложить заданное натуральное число n > 1 на простые множители.
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String{
+    var newN = n
+    var finStr:String = ""
+    val digList = mutableListOf<Int>()
+    while(newN!=1) {
+        for (i in 2..newN)
+            if ((newN / i.toDouble())% 1.0 == 0.0) {
+                finStr+=i
+                newN /= i
+                break
+            }
+        if(newN!=1)finStr+="*"
+    }
+    return finStr
+}
 
 /**
  * Средняя
