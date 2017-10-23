@@ -5,7 +5,6 @@ package lesson3.task1
 import java.lang.Math.*
 
 
-
 /*fun lenght(n:Int):Int{
     var i = 0
     var newN = n
@@ -17,15 +16,7 @@ import java.lang.Math.*
 }*/
 
 
-
-
-
-
-
 //чтоб коментарии не съехали
-
-
-
 
 
 /**
@@ -106,7 +97,6 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var firstF = 1
     var secondF = 0
-
     for (i in 2..n) {
         val c = firstF
         firstF += secondF
@@ -161,8 +151,9 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.п
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for(i in 2..n/2){
-        if(m%i==0 && n%i==0) {
+    val maxVal = max(m, n)/2
+    for (i in 2..maxVal) {
+        if (m % i == 0 && n % i == 0) {
             return false
         }
     }
@@ -177,7 +168,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var i = 1.0
+    var i = round(sqrt(min(m,n).toDouble()))
     while (i * i <= n) {
         if (i * i >= m) {
             return true
@@ -194,7 +185,19 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var i = -1
+    var j = 3.0
+    val newX = x % (2 * PI)
+    var memberAll = newX
+    do {
+        val member = i * pow(newX, j) / factorial(j.toInt())
+        i *= -1
+        j += 2.0
+        memberAll += member
+    } while (abs(member) >= eps)
+    return memberAll
+}
 
 /**
  * Средняя
@@ -203,7 +206,19 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var i = -1
+    var j = 2.0
+    val newX = x % (2 * PI)
+    var memberAll = 1.0
+    do {
+        val member = i * pow(newX, j) / factorial(j.toInt())
+        i *= -1
+        j += 2.0
+        memberAll += member
+    } while (abs(member) >= eps)
+    return memberAll
+}
 
 /**
  * Средняя
