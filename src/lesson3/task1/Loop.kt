@@ -16,17 +16,17 @@ import kotlin.coroutines.experimental.suspendCoroutine
     return i
 }*/
 
-fun simpleNum(n: Int, m: Int): Int {
-    var a = n
-    var b = m
-    var c: Int
-    while (b != 0) {
-        c = a % b
-        a = b
-        b = c
-    }
-    return abs(a)
-}
+
+
+
+
+
+
+//чтоб коментарии не съехали
+
+
+
+
 
 /**
  * Пример
@@ -106,9 +106,9 @@ fun digitNumber(n: Int): Int {
 fun fib(n: Int): Int {
     var firstF = 1
     var secondF = 0
-    var c: Int
+
     for (i in 2..n) {
-        c = firstF
+        val c = firstF
         firstF += secondF
         secondF = c
     }
@@ -161,10 +161,12 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.п
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    when (simpleNum(n, m)) {
-        1 -> return true
-        else -> return false
+    for(i in 2..n/2){
+        if(m%i==0 && n%i==0) {
+            return false
+        }
     }
+    return true
 }
 
 /**
@@ -175,11 +177,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-
-    for (i in sqrt(m.toDouble()).toInt()..sqrt(n.toDouble()).toInt()) {
-        if (i * i in m..n) {
+    var i = 1.0
+    while (i * i <= n) {
+        if (i * i >= m) {
             return true
         }
+        i++
     }
     return false
 }

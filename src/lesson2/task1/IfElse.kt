@@ -125,7 +125,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val maxSide = max(max(a, b), c)
     val minSide = min(min(a, b), c)
     val midSide = a + b + c - minSide - maxSide
-    if (a + b > c && a + c > b && b + c > a)
+    if(maxSide<midSide+minSide)
         return when {
             maxSide * maxSide < minSide * minSide + midSide * midSide -> 0
             maxSide * maxSide == minSide * minSide + midSide * midSide -> 1
@@ -146,13 +146,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     if (d < a || c > b) return -1
     if (a <= c) {
-        when {
-            b <= d -> return abs(b - c)
-            else -> return abs(d - c)
-        }
+        return abs(min(b, d) - c)
     }
-        when {
-            b <= d -> return abs(b - a)
-            else -> return abs(d - a)
-    }
+    return abs(min(b, d) - a)
 }
