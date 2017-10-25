@@ -137,7 +137,7 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.п
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    val maxVal = max(m, n) / 2
+    val maxVal = max(m, n)
     for (i in 2..maxVal) {
         if (m % i == 0 && n % i == 0) {
             return false
@@ -157,7 +157,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     when {
         sqrt(m.toDouble()) % 1.0 == 0.0 -> return true
         sqrt(n.toDouble()) % 1.0 == 0.0 -> return true
-        sqrt(m.toDouble()).toInt() != sqrt(n.toDouble()).toInt() -> return true
+        floor(sqrt(m.toDouble())) != floor(sqrt(n.toDouble())) -> return true
         else -> return false
     }
 }
@@ -210,11 +210,21 @@ fun cos(x: Double, eps: Double): Double {
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
+fun numLength(n: Int): Int {
+    var i = 0
+    var newN = n
+    while (newN > 0) {
+        newN /= 10
+        i++
+    }
+    return i
+}
+
 fun revert(n: Int): Int {
     var newNum = 0
-    for (i in 1..n.toString().length) {
+    for (i in 1..numLength(n)) {
         val singleNum = n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt()
-        newNum += singleNum * pow(10.0, n.toString().length - i.toDouble()).toInt()
+        newNum += singleNum * pow(10.0, numLength(n) - i.toDouble()).toInt()
     }
     return newNum
 }
@@ -226,15 +236,7 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    for (i in 1..n.toString().length / 2) {
-        val firstNum = n % pow(10.0, n.toString().length - i + 1.0).toInt() / pow(10.0, n.toString().length - i.toDouble()).toInt()
-        val secondNum = n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt()
-        if (firstNum != secondNum)
-            return false
-    }
-    return true
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -242,7 +244,13 @@ fun isPalindrome(n: Int): Boolean {
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    for (i in 1 until numLength(n)) {
+        if (n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt() != n % pow(10.0, i + 1.0).toInt() / pow(10.0, i.toDouble()).toInt())
+            return true
+    }
+    return false
+}//Как можно укоротить?
 
 /**
  * Сложная
