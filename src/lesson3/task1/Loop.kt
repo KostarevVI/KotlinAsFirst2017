@@ -5,20 +5,6 @@ package lesson3.task1
 import java.lang.Math.*
 
 
-/*fun lenght(n:Int):Int{
-    var i = 0
-    var newN = n
-    while(newN>0){
-        newN/=10
-        i++
-    }
-    return i
-}*/
-
-
-//чтоб коментарии не съехали
-
-
 /**
  * Пример
  *
@@ -112,8 +98,8 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var number1: Int = m
-    var number2: Int = n
+    var number1 = m
+    var number2 = n
     while (number1 != number2) {
         if (number1 > number2) number1 -= number2
         else number2 -= number1
@@ -151,7 +137,7 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.п
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    val maxVal = max(m, n)/2
+    val maxVal = max(m, n) / 2
     for (i in 2..maxVal) {
         if (m % i == 0 && n % i == 0) {
             return false
@@ -168,14 +154,12 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var i = round(sqrt(min(m,n).toDouble()))
-    while (i * i <= n) {
-        if (i * i >= m) {
-            return true
-        }
-        i++
+    when {
+        sqrt(m.toDouble()) % 1.0 == 0.0 -> return true
+        sqrt(n.toDouble()) % 1.0 == 0.0 -> return true
+        sqrt(m.toDouble()).toInt() != sqrt(n.toDouble()).toInt() -> return true
+        else -> return false
     }
-    return false
 }
 
 /**
@@ -227,11 +211,12 @@ fun cos(x: Double, eps: Double): Double {
  * Не использовать строки при решении задачи.
  */
 fun revert(n: Int): Int {
-    var newNumber = ""
-    for (i in n.toString().length - 1 downTo 0) {
-        newNumber += n.toString()[i]
+    var newNum = 0
+    for (i in 1..n.toString().length) {
+        val singleNum = n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt()
+        newNum += singleNum * pow(10.0, n.toString().length - i.toDouble()).toInt()
     }
-    return newNumber.toInt()
+    return newNum
 }
 
 /**
@@ -241,7 +226,15 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    for (i in 1..n.toString().length / 2) {
+        val firstNum = n % pow(10.0, n.toString().length - i + 1.0).toInt() / pow(10.0, n.toString().length - i.toDouble()).toInt()
+        val secondNum = n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt()
+        if (firstNum != secondNum)
+            return false
+    }
+    return true
+}
 
 /**
  * Средняя

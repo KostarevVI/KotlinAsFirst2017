@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson4.task1
 
 import java.lang.Math.*
@@ -110,7 +111,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
 fun abs(v: List<Double>): Double {
     var notAbs = 0.0
     for (element in v)
-        notAbs += element*element
+        notAbs += element * element
     return sqrt(notAbs)
 }
 
@@ -119,14 +120,12 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double{
+fun mean(list: List<Double>): Double {
     var middleEl = 0.0
-    if(list.isEmpty()) return 0.0
-    else {
-        for (i in 0 until list.size)
-            middleEl += list[i]
-        return middleEl / list.size
-    }
+    if (list.isEmpty()) return 0.0
+    for (i in 0 until list.size)
+        middleEl += list[i]
+    return middleEl / list.size
 }
 
 /**
@@ -137,12 +136,11 @@ fun mean(list: List<Double>): Double{
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double>
-{
-    if(list.isEmpty()) return list
-    else{
-        var middleEl = mean(list)
-        for(i in 0 until list.size)
+fun center(list: MutableList<Double>): MutableList<Double> {
+    if (list.isEmpty()) return list
+    else {
+        val middleEl = mean(list)
+        for (i in 0 until list.size)
             list[i] -= middleEl
         return list
     }
@@ -155,12 +153,12 @@ fun center(list: MutableList<Double>): MutableList<Double>
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double{
-    if(a.isEmpty()) return 0.0
-    else{
+fun times(a: List<Double>, b: List<Double>): Double {
+    if (a.isEmpty()) return 0.0
+    else {
         var VecSum = 0.0
-        for(i in 0 until a.size)
-            VecSum += a[i]*b[i]
+        for (i in 0 until a.size)
+            VecSum += a[i] * b[i]
         return VecSum
     }
 }
@@ -175,7 +173,7 @@ fun times(a: List<Double>, b: List<Double>): Double{
  */
 fun polynom(p: List<Double>, x: Double): Double {
     var thing = 0.0
-    when(p.isEmpty()){                                           //выглядит глупо, но я решил попробовать что-то новое
+    when (p.isEmpty()) {                                           //выглядит глупо, но я решил попробовать что-то новое
         true -> return thing
         false -> {
             for (i in 0 until p.size)
@@ -184,6 +182,7 @@ fun polynom(p: List<Double>, x: Double): Double {
         }
     }
 }
+
 /**
  * Средняя
  *
@@ -194,17 +193,16 @@ fun polynom(p: List<Double>, x: Double): Double {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double>{
-    var listCopy = mutableListOf<Double>()
-    listCopy = list
-    for(i in 1 until list.size) {
+fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
+/*    listCopy = list
+    for (i in 1 until list.size) {
         var newElement = 0.0
         for (j in 0..i)
-            newElement+=listCopy[j]
-        list[i]=newElement
+            newElement += listCopy[j]
+        list[i] = newElement
     }
     return list
-}
+}*///потом разберусь
 
 /**
  * Средняя
@@ -213,16 +211,18 @@ fun accumulate(list: MutableList<Double>): MutableList<Double>{
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int>{
+fun factorize(n: Int): List<Int> {
     var newN = n
+    var i = 2
     val digList = mutableListOf<Int>()
-    while(newN!=1) {
-        for (i in 2..newN)
-            if ((newN / i.toDouble())% 1.0 == 0.0) {
+    while (newN != 1) {
+        while (i <= newN) {
+            if ((newN / i.toDouble()) % 1.0 == 0.0) {
                 digList.add(i)
                 newN /= i
                 break
-            }
+            } else i++
+        }
     }
     return digList
 }
@@ -233,21 +233,7 @@ fun factorize(n: Int): List<Int>{
  * Разложить заданное натуральное число n > 1 на простые множители.
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
-fun factorizeToString(n: Int): String{
-    var newN = n
-    var finStr:String = ""
-    val digList = mutableListOf<Int>()
-    while(newN!=1) {
-        for (i in 2..newN)
-            if ((newN / i.toDouble())% 1.0 == 0.0) {
-                finStr+=i
-                newN /= i
-                break
-            }
-        if(newN!=1)finStr+="*"
-    }
-    return finStr
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
