@@ -210,21 +210,12 @@ fun cos(x: Double, eps: Double): Double {
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun numLength(n: Int): Int {
-    var i = 0
-    var newN = n
-    while (newN > 0) {
-        newN /= 10
-        i++
-    }
-    return i
-}
 
 fun revert(n: Int): Int {
     var newNum = 0
-    for (i in 1..numLength(n)) {
-        val singleNum = n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt()
-        newNum += singleNum * pow(10.0, numLength(n) - i.toDouble()).toInt()
+    for (i in 1..digitNumber(n)) {
+        val singleNum = n / pow(10.0, i - 1.0).toInt() % 10
+        newNum += singleNum * pow(10.0, digitNumber(n) - i.toDouble()).toInt()
     }
     return newNum
 }
@@ -245,12 +236,12 @@ fun isPalindrome(n: Int): Boolean = revert(n) == n
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    for (i in 1 until numLength(n)) {
-        if (n % pow(10.0, i.toDouble()).toInt() / pow(10.0, i - 1.0).toInt() != n % pow(10.0, i + 1.0).toInt() / pow(10.0, i.toDouble()).toInt())
+    for (i in 1 until digitNumber(n)) {
+        if (n / pow(10.0, i - 1.0).toInt() % 10 != n / pow(10.0, i.toDouble()).toInt() % 10)
             return true
     }
     return false
-}//Как можно укоротить?
+}
 
 /**
  * Сложная
@@ -260,6 +251,11 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int = TODO()
+/*{
+    var sqrNum = 1
+    while(digitNumber(sqrNum*sqrNum) < n) sqrNum++
+    return sqrNum*sqrNum%pow(10.0, digitNumber(sqrNum*sqrNum) - n + 1.0).toInt()/pow(10.0, digitNumber(sqrNum*sqrNum) - n.toDouble()).toInt()
+}*/
 
 /**
  * Сложная
@@ -269,3 +265,17 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
 fun fibSequenceDigit(n: Int): Int = TODO()
+/*{
+    var firstF = 1
+    var secondF = 1
+    var fibNum = 1.0
+    var i = 0
+    while (digitNumber(fibNum.toInt())<n) {
+        fibNum=fibNum*pow(10.0, digitNumber(firstF).toDouble()).toInt() + firstF
+        val c = firstF
+        firstF += secondF
+        secondF = c
+        i++
+    }
+    return (fibNum/pow(10.0, digitNumber(fibNum.toInt())-n.toDouble())%10).toInt()
+}*/
