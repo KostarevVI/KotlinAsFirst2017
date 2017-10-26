@@ -250,12 +250,15 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
-/*{
+fun squareSequenceDigit(n: Int): Int {
+    var numDigits = 1
     var sqrNum = 1
-    while(digitNumber(sqrNum*sqrNum) < n) sqrNum++
-    return sqrNum*sqrNum%pow(10.0, digitNumber(sqrNum*sqrNum) - n + 1.0).toInt()/pow(10.0, digitNumber(sqrNum*sqrNum) - n.toDouble()).toInt()
-}*/
+    while (numDigits < n) {
+        sqrNum++
+        numDigits += digitNumber(sqrNum * sqrNum)
+    }
+    return (sqrNum * sqrNum) / pow(10.0, numDigits - n.toDouble()).toInt() % 10
+}
 
 /**
  * Сложная
@@ -264,18 +267,16 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
-/*{
-    var firstF = 1
-    var secondF = 1
-    var fibNum = 1.0
-    var i = 0
-    while (digitNumber(fibNum.toInt())<n) {
-        fibNum=fibNum*pow(10.0, digitNumber(firstF).toDouble()).toInt() + firstF
-        val c = firstF
-        firstF += secondF
-        secondF = c
+fun fibSequenceDigit(n: Int): Int {
+    var numDigits = 0
+    var i = 1
+    var fibNum:Int
+    do {
+        fibNum = fib(i)
+        numDigits += digitNumber(fibNum)
         i++
-    }
-    return (fibNum/pow(10.0, digitNumber(fibNum.toInt())-n.toDouble())%10).toInt()
-}*/
+    } while (numDigits < n)
+    return fibNum / pow(10.0, numDigits - n.toDouble()).toInt() % 10
+}
+
+
