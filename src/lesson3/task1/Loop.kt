@@ -153,13 +153,11 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean {
-    when {
-        sqrt(m.toDouble()) % 1.0 == 0.0 -> return true
-        sqrt(n.toDouble()) % 1.0 == 0.0 -> return true
-        floor(sqrt(m.toDouble())) != floor(sqrt(n.toDouble())) -> return true
-        else -> return false
-    }
+fun squareBetweenExists(m: Int, n: Int): Boolean = when {
+    sqrt(m.toDouble()) % 1.0 == 0.0 -> true
+    sqrt(n.toDouble()) % 1.0 == 0.0 -> true
+    ceil(sqrt(m.toDouble())) != ceil(sqrt(n.toDouble())) -> true
+    else -> false
 }
 
 /**
@@ -215,7 +213,8 @@ fun revert(n: Int): Int {
     var newNum = 0
     for (i in 1..digitNumber(n)) {
         val singleNum = n / pow(10.0, i - 1.0).toInt() % 10
-        newNum += singleNum * pow(10.0, digitNumber(n) - i.toDouble()).toInt()
+        val numDec = digitNumber(n) - i.toDouble()
+        newNum += singleNum * pow(10.0,numDec).toInt()
     }
     return newNum
 }

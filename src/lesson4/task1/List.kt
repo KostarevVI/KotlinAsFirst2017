@@ -153,12 +153,12 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double {
-    if (a.isEmpty()) return 0.0
+    return if (a.isEmpty()) 0.0
     else {
-        var VecSum = 0.0
+        var vecSum = 0.0
         for (i in 0 until a.size)
-            VecSum += a[i] * b[i]
-        return VecSum
+            vecSum += a[i] * b[i]
+        vecSum
     }
 }
 
@@ -214,7 +214,7 @@ fun factorize(n: Int): List<Int> {
     var i = 2
     val digList = mutableListOf<Int>()
     while (newN != 1) {
-        if (newN % i.toDouble() == 0.0) {
+        if (newN % i == 0) {
             digList.add(i)
             newN /= i
         } else i++
@@ -241,10 +241,10 @@ fun convert(n: Int, base: Int): List<Int> {
     var newN = n
     val baseNum = mutableListOf<Int>()
     do {
-        baseNum.add(0, newN % base)
+        baseNum.add(newN % base)
         newN /= base
     } while (newN != 0)
-    return baseNum
+    return baseNum.reversed()
 }
 
 /**
@@ -260,7 +260,7 @@ fun convertToString(n: Int, base: Int): String {
     var stringNum = ""
     for (i in 0 until list.size) {
         if (list[i] > 9)
-            stringNum += (list[i] + 87).toChar().toString()
+            stringNum += (list[i] + 87).toChar()
         else stringNum += list[i]
     }
     return stringNum
@@ -297,9 +297,9 @@ fun decimalFromString(str: String, base: Int): Int {
     var finNum = 0
     var j = 0
     for (i in str.length - 1 downTo 0) {
-        if ((str[i] - 48).toInt() > 9)
+        if ((str[i].toInt() - 48) > 9)
             finNum += (str[i].toInt() - 87) * pow(base.toDouble(), j.toDouble()).toInt()
-        else finNum += (str[i] - 48).toInt() * pow(base.toDouble(), j.toDouble()).toInt()
+        else finNum += (str[i].toInt() - 48) * pow(base.toDouble(), j.toDouble()).toInt()
         j++
     }
     return finNum
@@ -316,12 +316,12 @@ fun decimalFromString(str: String, base: Int): Int {
 fun roman(n: Int): String {
     var newN = n
     var romNum = ""
-    val rom = listOf<String>("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
-    val arab = listOf<String>("1", "4", "5", "9", "10", "40", "50", "90", "100", "400", "500", "900", "1000")
+    val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
+    val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
     var i = 12
     while (newN != 0) {
-        while (arab[i].toInt() <= newN) {
-            newN -= arab[i].toInt()
+        while (arab[i] <= newN) {
+            newN -= arab[i]
             romNum += rom[i]
         }
         i--
@@ -337,7 +337,7 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    val units = listOf<String>("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
     var numSize = digitNumber(n)
     var strNum = ""
     while (numSize > 0) {
@@ -396,9 +396,7 @@ fun dozens(strNum: String, n: Int, numSize: Int, units: List<String>): String {
                 4 -> "четырнадцать "
                 else -> units[nextNum - 1].substring(0, units[nextNum - 1].length - 1) + "надцать "
             }
-        } else {
-            "десять "
-        }
+        } else "десять "
         in 2..3 -> return units[number - 1] + "дцать "
         4 -> return "сорок "
         9 -> return "девяносто "
