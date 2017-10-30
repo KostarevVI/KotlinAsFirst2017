@@ -270,7 +270,7 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var numDigits = 0
     var i = 1
-    var fibNum:Int
+    var fibNum: Int
     do {
         fibNum = fib(i)
         numDigits += digitNumber(fibNum)
