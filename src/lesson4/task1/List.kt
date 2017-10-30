@@ -213,11 +213,10 @@ fun factorize(n: Int): List<Int> {
     var newN = n
     var i = 2
     val digList = mutableListOf<Int>()
-    while (newN != 1 || i <= newN) {
-        if (newN % i == 0) {
+    while (newN != 1) {
+        if (newN % i.toDouble() == 0.0) {
             digList.add(i)
             newN /= i
-            break
         } else i++
     }
     return digList
@@ -240,12 +239,12 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  */
 fun convert(n: Int, base: Int): List<Int> {
     var newN = n
-    val baseNums = mutableListOf<Int>()
-    while (newN != 0) {
-        baseNums.add(0, newN % base)
+    val baseNum = mutableListOf<Int>()
+    do {
+        baseNum.add(0, newN % base)
         newN /= base
-    }
-    return baseNums
+    } while (newN != 0)
+    return baseNum
 }
 
 /**
@@ -402,7 +401,7 @@ fun dozens(strNum: String, n: Int, numSize: Int, units: List<String>): String {
         }
         in 2..3 -> return units[number - 1] + "дцать "
         4 -> return "сорок "
-        9 -> return "девяноста "
+        9 -> return "девяносто "
         else -> return units[number - 1] + "десят "
     }
 }
