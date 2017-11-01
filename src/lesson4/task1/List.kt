@@ -296,7 +296,7 @@ fun decimalFromString(str: String, base: Int): Int {
     var j = 0
     for (i in str.length - 1 downTo 0) {
         if ((str[i] - '0') > 9)
-            finNum += (str[i] - 'a') * pow(base.toDouble(), j.toDouble()).toInt()
+            finNum += (str[i] - 'W') * pow(base.toDouble(), j.toDouble()).toInt()
         else finNum += (str[i] - '0') * pow(base.toDouble(), j.toDouble()).toInt()
         j++
     }
@@ -378,7 +378,7 @@ fun hundreds(units: List<String>, number: Int): String = when (number) {
 fun dozens(units: List<String>, digits: List<Int>, i: Int): String {
     when (digits[i]) {
         0 -> return ""
-        1 -> return if (digits[i] != 0) {
+        1 -> return if (digits[i - 1] != 0) {
             val nextNum = digits[i - 1]
             when (nextNum) {
                 1 -> "одиннадцать "
