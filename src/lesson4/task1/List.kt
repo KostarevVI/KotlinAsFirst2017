@@ -153,13 +153,11 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
 fun times(a: List<Double>, b: List<Double>): Double {
-    return if (a.isEmpty()) 0.0
-    else {
-        var vecSum = 0.0
-        for (i in 0 until a.size)
-            vecSum += a[i] * b[i]
-        vecSum
-    }
+    if (a.isEmpty()) return 0.0
+    var vecSum = 0.0
+    for (i in 0 until a.size)
+        vecSum += a[i] * b[i]
+    return vecSum
 }
 
 /**
@@ -260,7 +258,7 @@ fun convertToString(n: Int, base: Int): String {
     var stringNum = ""
     for (i in 0 until list.size) {
         if (list[i] > 9)
-            stringNum += (list[i] + 87).toChar()
+            stringNum += 'W' + list[i]
         else stringNum += list[i]
     }
     return stringNum
@@ -297,9 +295,9 @@ fun decimalFromString(str: String, base: Int): Int {
     var finNum = 0
     var j = 0
     for (i in str.length - 1 downTo 0) {
-        if ((str[i].toInt() - 48) > 9)
-            finNum += (str[i].toInt() - 87) * pow(base.toDouble(), j.toDouble()).toInt()
-        else finNum += (str[i].toInt() - 48) * pow(base.toDouble(), j.toDouble()).toInt()
+        if ((str[i] - '0') > 9)
+            finNum += (str[i] - 'a') * pow(base.toDouble(), j.toDouble()).toInt()
+        else finNum += (str[i] - '0') * pow(base.toDouble(), j.toDouble()).toInt()
         j++
     }
     return finNum
@@ -318,7 +316,7 @@ fun roman(n: Int): String {
     var romNum = ""
     val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
     val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
-    var i = 12
+    var i = rom.size - 1
     while (newN != 0) {
         while (arab[i] <= newN) {
             newN -= arab[i]
@@ -338,68 +336,63 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    var numSize = digitNumber(n)
     var strNum = ""
-    while (numSize > 0) {
-        when (numSize) {
-            1 -> if (n / pow(10.0, numSize - 1.0).toInt() % 10 != 0)
-                strNum += units[n / pow(10.0, numSize - 1.0).toInt() % 10 - 1] + " "
-            2 -> {
-                strNum += dozens(strNum, n, numSize, units)
-                if (n / pow(10.0, numSize - 1.0).toInt() % 10 == 1) numSize--
+    val digits = convert(n, 10).toMutableList().asReversed()
+    if (digits.size > 3) {
+        while (digits.size < 6)
+            digits.add(0)
+        strNum += hundreds(units, digits[5]) + dozens(units, digits, 4)
+        strNum += if (digits[4] != 1)
+            when (digits[3]) {
+                0 -> "тысяч "
+                1 -> "одна тысяча "
+                2 -> "две тысячи "
+                3 -> "три тысячи "
+                4 -> "четыре тысячи "
+                else -> units[digits[3] - 1] + " тысяч "
             }
-            3 -> strNum += hundreds(strNum, n, numSize, units)
-            4 -> strNum += thousands(strNum, n, numSize, units)
-            5 -> strNum += dozens(strNum, n, numSize, units)
-            6 -> strNum += hundreds(strNum, n, numSize, units)
+        else {
+            "тысяч "
         }
-        numSize--
+    }
+    while (digits.size < 3)
+        digits.add(0)
+    strNum += hundreds(units, digits[2]) + dozens(units, digits, 1) + if (digits[0] != 0 && digits[1] != 1) {
+        units[digits[0] - 1]
+    } else {
+        ""
     }
     return strNum.trim()
 }
 
-fun thousands(strNum: String, n: Int, numSize: Int, units: List<String>): String {
-    val number = n / pow(10.0, numSize - 1.0).toInt() % 10
-    return if (n / pow(10.0, numSize.toDouble()).toInt() % 10 != 1)
-        when (number) {
-            0 -> "тысяч "
-            1 -> "одна тысяча "
-            2 -> "две тысячи "
-            3 -> "три тысячи "
-            4 -> "четыре тысячи "
-            else -> units[number - 1] + " тысяч "
-        }
-    else "тысяч "
+
+fun hundreds(units: List<String>, number: Int): String = when (number) {
+    0 -> ""
+    1 -> "сто "
+    2 -> "двести "
+    in 3..4 -> units[number - 1] + "ста "
+    else -> units[number - 1] + "сот "
 }
 
-fun hundreds(strNum: String, n: Int, numSize: Int, units: List<String>): String {
-    val number = n / pow(10.0, numSize - 1.0).toInt() % 10
-    return when (number) {
-        0 -> ""
-        1 -> "сто "
-        2 -> "двести "
-        in 3..4 -> units[number - 1] + "ста "
-        else -> units[number - 1] + "сот "
-    }
-}
 
-fun dozens(strNum: String, n: Int, numSize: Int, units: List<String>): String {
-    val number = n / pow(10.0, numSize - 1.0).toInt() % 10
-    when (number) {
+fun dozens(units: List<String>, digits: List<Int>, i: Int): String {
+    when (digits[i]) {
         0 -> return ""
-        1 -> return if (n / pow(10.0, numSize - 2.0).toInt() % 10 != 0) {
-            val nextNum = n / pow(10.0, numSize - 2.0).toInt() % 10
+        1 -> return if (digits[i] != 0) {
+            val nextNum = digits[i - 1]
             when (nextNum) {
                 1 -> "одиннадцать "
                 2 -> "двенадцать "
                 3 -> "тринадцать "
                 4 -> "четырнадцать "
-                else -> units[nextNum - 1].substring(0, units[nextNum - 1].length - 1) + "надцать "
+                else -> units[nextNum - 1].substring(0, units[nextNum - 1].length - 1) + "надцать " //15..19
             }
-        } else "десять "
-        in 2..3 -> return units[number - 1] + "дцать "
+        } else {
+            "десять "
+        }
+        in 2..3 -> return units[digits[i] - 1] + "дцать "
         4 -> return "сорок "
         9 -> return "девяносто "
-        else -> return units[number - 1] + "десят "
+        else -> return units[digits[i] - 1] + "десят "
     }
 }
