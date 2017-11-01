@@ -395,4 +395,4 @@ fun dozens(units: List<String>, digits: List<Int>, i: Int): String {
         9 -> return "девяносто "
         else -> return units[digits[i] - 1] + "десят "
     }
-}
+}//коммит не пришёл на гитхаб
