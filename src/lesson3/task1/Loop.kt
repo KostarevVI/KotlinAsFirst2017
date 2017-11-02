@@ -156,7 +156,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
 fun squareBetweenExists(m: Int, n: Int): Boolean = ceil(sqrt(m.toDouble())) <= floor(sqrt(n.toDouble()))
 
 
-/**
+/***
  * Средняя
  *
  * Для заданного x рассчитать с заданной точностью eps
