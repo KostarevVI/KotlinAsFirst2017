@@ -5,6 +5,7 @@ package lesson4.task1
 import java.lang.Math.*
 import lesson1.task1.discriminant
 import lesson3.task1.digitNumber
+import java.util.*
 
 /**
  * Пример
@@ -258,7 +259,7 @@ fun convertToString(n: Int, base: Int): String {
     var stringNum = ""
     for (i in 0 until list.size) {
         if (list[i] > 9)
-            stringNum += 'W' + list[i]
+            stringNum += 'a' + list[i] - 10
         else stringNum += list[i]
     }
     return stringNum
@@ -296,7 +297,7 @@ fun decimalFromString(str: String, base: Int): Int {
     var j = 0
     for (i in str.length - 1 downTo 0) {
         if ((str[i] - '0') > 9)
-            finNum += (str[i] - 'W') * pow(base.toDouble(), j.toDouble()).toInt()
+            finNum += (str[i] - 'a' + 10) * pow(base.toDouble(), j.toDouble()).toInt()
         else finNum += (str[i] - '0') * pow(base.toDouble(), j.toDouble()).toInt()
         j++
     }
@@ -336,63 +337,78 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
-    var strNum = ""
+    val numList = mutableListOf<String>()
     val digits = convert(n, 10).toMutableList().asReversed()
     if (digits.size > 3) {
-        while (digits.size < 6)
-            digits.add(0)
-        strNum += hundreds(units, digits[5]) + dozens(units, digits, 4)
-        strNum += if (digits[4] != 1)
-            when (digits[3]) {
-                0 -> "тысяч "
-                1 -> "одна тысяча "
-                2 -> "две тысячи "
-                3 -> "три тысячи "
-                4 -> "четыре тысячи "
-                else -> units[digits[3] - 1] + " тысяч "
-            }
-        else {
-            "тысяч "
-        }
+        Collections.addAll(numList, hundreds(units, digits, 5), dozens(units, digits, 4), thousands(units, digits, 3))
     }
-    while (digits.size < 3)
-        digits.add(0)
-    strNum += hundreds(units, digits[2]) + dozens(units, digits, 1) + if (digits[0] != 0 && digits[1] != 1) {
+    Collections.addAll(numList, hundreds(units, digits, 2), dozens(units, digits, 1), if (digits[0] != 0 && digits[1] != 1) {
         units[digits[0] - 1]
     } else {
         ""
+    })
+    val newNumList = numList.filter { it != "" }
+    return newNumList.joinToString(" ")
+}
+
+
+fun hundreds(units: List<String>, digits: List<Int>, i: Int): String {
+    return if (i < digits.size)
+        when (digits[i]) {
+            0 -> ""
+            1 -> "сто"
+            2 -> "двести"
+            in 3..4 -> units[digits[i] - 1] + "ста"
+            else -> units[digits[i] - 1] + "сот"
+        }
+    else {
+        ""
     }
-    return strNum.trim()
 }
-
-
-fun hundreds(units: List<String>, number: Int): String = when (number) {
-    0 -> ""
-    1 -> "сто "
-    2 -> "двести "
-    in 3..4 -> units[number - 1] + "ста "
-    else -> units[number - 1] + "сот "
-}
-
 
 fun dozens(units: List<String>, digits: List<Int>, i: Int): String {
-    when (digits[i]) {
-        0 -> return ""
-        1 -> return if (digits[i - 1] != 0) {
-            val nextNum = digits[i - 1]
-            when (nextNum) {
-                1 -> "одиннадцать "
-                2 -> "двенадцать "
-                3 -> "тринадцать "
-                4 -> "четырнадцать "
-                else -> units[nextNum - 1].substring(0, units[nextNum - 1].length - 1) + "надцать " //15..19
+    return if (i < digits.size)
+        when (digits[i]) {
+            0 -> return ""
+            1 -> return if (digits[i - 1] != 0) {
+                val nextNum = digits[i - 1]
+                when (nextNum) {
+                    1 -> "одиннадцать"
+                    2 -> "двенадцать"
+                    3 -> "тринадцать"
+                    4 -> "четырнадцать"
+                    else -> units[nextNum - 1].substring(0, units[nextNum - 1].length - 1) + "надцать" //15..19
+                }
+            } else {
+                "десять"
             }
-        } else {
-            "десять "
+            in 2..3 -> return units[digits[i] - 1] + "дцать"
+            4 -> return "сорок"
+            9 -> return "девяносто"
+            else -> return units[digits[i] - 1] + "десят"
         }
-        in 2..3 -> return units[digits[i] - 1] + "дцать "
-        4 -> return "сорок "
-        9 -> return "девяносто "
-        else -> return units[digits[i] - 1] + "десят "
+    else {
+        ""
     }
-}//коммит не пришёл на гитхаб
+}
+
+fun thousands(units: List<String>, digits: List<Int>, i: Int): String {
+    return if (i < digits.size)
+        if (i + 1 >= digits.size || digits[i + 1] != 1)
+            when (digits[i]) {
+                0 -> "тысяч"
+                1 -> "одна тысяча"
+                2 -> "две тысячи"
+                3 -> "три тысячи"
+                4 -> "четыре тысячи"
+                else -> units[digits[i] - 1] + " тысяч"
+            }
+        else {
+            "тысяч"
+        }
+    else {
+        ""
+    }
+}
+
+
