@@ -342,7 +342,7 @@ fun russian(n: Int): String {
     if (digits.size > 3) {
         Collections.addAll(numList, hundreds(units, digits, 5), dozens(units, digits, 4), thousands(units, digits, 3))
     }
-    Collections.addAll(numList, hundreds(units, digits, 2), dozens(units, digits, 1), if (digits[0] != 0 && digits[1] != 1) {
+    Collections.addAll(numList, hundreds(units, digits, 2), dozens(units, digits, 1), if (digits[0] != 0 && (2>digits.size||digits[1] != 1)) {
         units[digits[0] - 1]
     } else {
         ""
