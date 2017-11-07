@@ -68,12 +68,12 @@ fun main(args: Array<String>) {
 fun dateStrToDigit(str: String): String {
     val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val parts = str.split(" ")
-    try {
-        return if (parts[1] in month)
+    return try {
+        if (parts.size in 3..3 && parts[1] in month)
             String.format("%02d.%02d.%d", parts[0].toInt(), month.indexOf(parts[1]) + 1, parts[2].toInt())
         else ""
-    } catch (e: IndexOutOfBoundsException) {
-        return ""
+    } catch (e: NumberFormatException) {
+        ""
     }
 }
 
@@ -87,12 +87,12 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val parts = digital.split(".")
-    try {
-        return if (parts[1].toInt() > 1 && parts.size < 4) {
+    return try {
+        if (parts.size in 3..3 && parts[1].toInt() > 1) {
             String.format("%d %s %s", parts[0].toInt(), month[parts[1].toInt() - 1], parts[2])
         } else ""
     } catch (e: NumberFormatException) {
-        return ""
+        ""
     }
 }
 
