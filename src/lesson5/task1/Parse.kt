@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import lesson3.task1.digitNumber
+
 /**
  * Пример
  *
@@ -88,7 +90,7 @@ fun dateDigitToStr(digital: String): String {
     val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val parts = digital.split(".")
     return try {
-        if (parts.size in 3..3 && parts[1].toInt() > 1) {
+        if (parts.size in 3..3 && parts[1].toInt() > 1 && digitNumber(parts[2].toInt()) in 4..4) {
             String.format("%d %s %s", parts[0].toInt(), month[parts[1].toInt() - 1], parts[2])
         } else ""
     } catch (e: NumberFormatException) {
