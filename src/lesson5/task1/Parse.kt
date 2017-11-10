@@ -90,7 +90,7 @@ fun dateDigitToStr(digital: String): String {
     val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val parts = digital.split(".")
     return try {
-        if (parts.size in 3..3 && parts[1].toInt() > 1 && digitNumber(parts[2].toInt()) in 4..4) {
+        if (parts.size in 3..3 && parts[1].toInt() > 1 && parts[2].length in 4..4) {
             String.format("%d %s %s", parts[0].toInt(), month[parts[1].toInt() - 1], parts[2])
         } else ""
     } catch (e: NumberFormatException) {
@@ -98,7 +98,7 @@ fun dateDigitToStr(digital: String): String {
     }
 }
 
-/**
+/***
  * Средняя
  *
  * Номер телефона задан строкой вида "+7 (921) 123-45-67".
