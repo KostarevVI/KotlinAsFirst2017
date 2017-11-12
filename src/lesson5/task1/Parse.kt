@@ -192,7 +192,8 @@ fun plusMinus(expression: String): Int {
             }
         }
     } catch (e: NumberFormatException) {
-        throw e
+        val newE = IllegalArgumentException()
+        throw newE
     }
     return number
 }
