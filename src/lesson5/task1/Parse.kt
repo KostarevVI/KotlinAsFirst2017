@@ -215,7 +215,7 @@ fun firstDuplicateIndex(str: String): Int {
                     counter++
                 j++
             }
-            return j.inc()
+            return j++
         }
     }
     return -1
