@@ -138,7 +138,7 @@ fun bestLongJump(jumps: String): Int {
     val allJumps = jumps.split(" ")
     try {
         for (i in 0 until allJumps.size)
-            if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i].toInt() > 0 && allJumps[i].toInt() > bestJump)
+            if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i] != " " && allJumps[i].toInt() > 0 && allJumps[i].toInt() > bestJump)
                 bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
@@ -161,8 +161,9 @@ fun bestHighJump(jumps: String): Int {
     val allJumps = jumps.split(" ")
     try {
         for (i in 0 until allJumps.size - 1)
-            if ("+" !in allJumps[i] && "%" !in allJumps[i] && "-" !in allJumps[i] && allJumps[i].toInt() > 0 && allJumps[i + 1] == "+")
-                bestJump = allJumps[i].toInt()
+            if ("+" !in allJumps[i] && "%" !in allJumps[i] && "-" !in allJumps[i] && allJumps[i].toInt() > 0)
+                if (allJumps[i + 1] == "+" || allJumps[i + 1] == "%+")
+                    bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
     }
@@ -188,7 +189,7 @@ fun plusMinus(expression: String): Int {
                 "-" -> number -= strExp[i + 1].toInt()
             }
         }
-    } catch (e: IllegalArgumentException) {
+    } catch (e: NumberFormatException) {
         return 0
     }
     return number
