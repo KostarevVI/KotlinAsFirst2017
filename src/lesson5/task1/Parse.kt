@@ -138,8 +138,9 @@ fun bestLongJump(jumps: String): Int {
     val allJumps = jumps.split(" ")
     try {
         for (i in 0 until allJumps.size)
-            if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i] != " " && allJumps[i].toInt() > 0 && allJumps[i].toInt() > bestJump)
-                bestJump = allJumps[i].toInt()
+            if (allJumps[i].trim().isNotEmpty())
+                if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
+                    bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
     }
@@ -162,7 +163,7 @@ fun bestHighJump(jumps: String): Int {
     try {
         for (i in 0 until allJumps.size - 1)
             if ("+" !in allJumps[i] && "%" !in allJumps[i] && "-" !in allJumps[i] && allJumps[i].toInt() > 0)
-                if (allJumps[i + 1] == "+" || allJumps[i + 1] == "%+")
+                if ("+" in allJumps[i + 1] && allJumps[i].toInt() > bestJump)
                     bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
@@ -181,8 +182,9 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     val strExp = expression.split(" ")
-    var number = strExp[0].toInt()
+    var number = 0
     try {
+        number = strExp[0].toInt()
         for (i in 1 until strExp.size - 1 step 2) {
             when (strExp[i]) {
                 "+" -> number += strExp[i + 1].toInt()
@@ -259,11 +261,11 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int = TODO()
-/*{
+/* {
     val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
     val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
-    for (i in 0 until roman.length-1){
-        if(arab[rom.indexOf()])
+    for (i in 0 until roman.length - 1) {
+        if (arab[rom.indexOf()])
     }
 }*/
 
