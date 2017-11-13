@@ -358,7 +358,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     } catch (e: Exception) {
         when (e) {
             is ArrayIndexOutOfBoundsException, is IllegalArgumentException, is IndexOutOfBoundsException ->
-                throw IllegalArgumentException()
+                throw IllegalStateException()
         }
     }
     return cellsList
