@@ -307,13 +307,14 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    var i = 0
     var steps = 0
     var pos = floor(cells / 2.0).toInt()
     val cellsList = mutableListOf<Int>()
     val brPosList = mutableListOf<Int>()
-    for (i in 0 until cells)
+    for (i in 0 until cells) {
         cellsList.add(0)
+    }
+    var i = 0
     while (i < commands.length && steps < limit) {
         when (commands[i]) {
             '+' -> {
