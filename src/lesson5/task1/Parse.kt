@@ -157,8 +157,8 @@ fun bestHighJump(jumps: String): Int {
     var bestJump = -1
     val allJumps = jumps.split(" ")
     try {
-        for (i in 0 until allJumps.size-1 step 2)
-            if ("+" in allJumps[i+1] && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
+        for (i in 0 until allJumps.size - 1 step 2)
+            if ("+" in allJumps[i + 1] && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
                 bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
