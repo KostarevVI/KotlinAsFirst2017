@@ -313,11 +313,11 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         while (i < commands.length) {
             when (commands[i]) {
                 '[' -> brPosList.add(i)
-                ']' -> brPosList.remove(brPosList.size - 1)
+                ']' -> brPosList.removeAt(brPosList.size - 1)
             }
             i++
         }
-        if (brPosList.isNotEmpty())
+        if (brPosList.size > 0)
             throw IllegalStateException()
         //основной цикл
         i = 0
