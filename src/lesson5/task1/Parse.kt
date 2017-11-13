@@ -362,9 +362,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             }
             steps++
         }
-    } catch (e: ArrayIndexOutOfBoundsException) {
-        val newE = IllegalArgumentException()
-        throw newE
+    } catch (e: IllegalArgumentException) {
+        throw e
     }
     return cellsList
 }
