@@ -68,10 +68,11 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val parts = str.split(" ")
     return try {
-        if (parts.size in 3..3 && parts[1] in month)
+        if (parts.size == 3 && parts[1] in month)
             String.format("%02d.%02d.%d", parts[0].toInt(), month.indexOf(parts[1]) + 1, parts[2].toInt())
         else ""
     } catch (e: NumberFormatException) {
@@ -87,10 +88,11 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря")
     val parts = digital.split(".")
     return try {
-        if (parts.size in 3..3 && parts[1].toInt() > 0) {
+        if (parts.size == 3 && parts[1].toInt() > 0) {
             String.format("%d %s %s", parts[0].toInt(), month[parts[1].toInt() - 1], parts[2])
         } else ""
     } catch (e: NumberFormatException) {
@@ -133,7 +135,7 @@ fun bestLongJump(jumps: String): Int {
         for (i in 0 until allJumps.size)
             if (allJumps[i].trim().isNotEmpty())
                 if (allJumps[i] in listOf("a", "b", "c"))
-                    if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
+                    if (allJumps[i] !in listOf("-", "%") && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
                         bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
@@ -155,10 +157,9 @@ fun bestHighJump(jumps: String): Int {
     var bestJump = -1
     val allJumps = jumps.split(" ")
     try {
-        for (i in 0 until allJumps.size - 1)
-            if ("+" !in allJumps[i] && "%" !in allJumps[i] && "-" !in allJumps[i] && allJumps[i].toInt() >= 0)
-                if ("+" in allJumps[i + 1] && allJumps[i].toInt() > bestJump)
-                    bestJump = allJumps[i].toInt()
+        for (i in 0 until allJumps.size-1 step 2)
+            if ("+" in allJumps[i+1] && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
+                bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
     }
