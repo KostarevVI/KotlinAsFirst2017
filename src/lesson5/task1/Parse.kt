@@ -317,50 +317,55 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var i = 0
     try {
         while (i < commands.length && steps < limit) {
-            when (commands[i]) {
-                '+' -> {
-                    cellsList[pos]++
-                    i++
-                }
-                '-' -> {
-                    cellsList[pos]--
-                    i++
-                }
-                '>' -> {
-                    pos++
-                    i++
-                }
-                '<' -> {
-                    pos--
-                    i++
-                }
-                ' ' -> {
-                    i++
-                }
-                '[' -> if (cellsList[pos] == 0) {
-                    var brCount = 1
-                    while (brCount > 0) {
+            try {
+                when (commands[i]) {
+                    '+' -> {
+                        cellsList[pos]++
                         i++
-                        when (commands[i]) {
-                            '[' -> brCount++
-                            ']' -> brCount--
-                        }
-                        steps++
                     }
-                    steps--
-                    i++
-                } else {
-                    i++
-                    brPosList.add(i)
+                    '-' -> {
+                        cellsList[pos]--
+                        i++
+                    }
+                    '>' -> {
+                        pos++
+                        i++
+                    }
+                    '<' -> {
+                        pos--
+                        i++
+                    }
+                    ' ' -> {
+                        i++
+                    }
+                    '[' -> if (cellsList[pos] == 0) {
+                        var brCount = 1
+                        while (brCount > 0) {
+                            i++
+                            when (commands[i]) {
+                                '[' -> brCount++
+                                ']' -> brCount--
+                            }
+                            steps++
+                        }
+                        steps--
+                        i++
+                    } else {
+                        i++
+                        brPosList.add(i)
+                    }
+                    ']' -> if (cellsList[pos] != 0) {
+                        i = brPosList.last()
+                    } else {
+                        i++
+                        brPosList.removeAt(brPosList.size - 1)
+                    }
                 }
-                ']' -> if (cellsList[pos] != 0) {
-                    i = brPosList.last()
-                } else {
-                    i++
-                    brPosList.removeAt(brPosList.size - 1)
-                }
+                steps++
+            }catch (e:ArrayIndexOutOfBoundsException){
+                val newE = IllegalArgumentException()
+                throw newE
             }
-            steps++
         }
     } catch (e: IllegalArgumentException) {
         throw e
