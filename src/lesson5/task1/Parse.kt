@@ -111,16 +111,9 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    var newPhone = ""
-    for (i in 0 until phone.length) {
-        if (phone[i] in '0'..'9' || phone[i] == '+' || phone[i] == '-' || phone[i] in '('..')' || phone[i] == ' ') {
-            if (phone[i] in '0'..'9' || phone[i] == '+') newPhone += phone[i]
-        } else {
-            newPhone = ""
-            break
-        }
-    }
-    return newPhone
+    return if ("[^0-9\\-()+\\s]".toRegex().find(phone) != null) {
+        ""
+    } else phone.filter { it !in listOf('-', ' ', '(', ')') }
 }
 
 /**
@@ -139,8 +132,9 @@ fun bestLongJump(jumps: String): Int {
     try {
         for (i in 0 until allJumps.size)
             if (allJumps[i].trim().isNotEmpty())
-                if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
-                    bestJump = allJumps[i].toInt()
+                if (allJumps[i] in listOf("a", "b", "c"))
+                    if (allJumps[i] != "-" && allJumps[i] != "%" && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
+                        bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
     }
@@ -261,12 +255,12 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int = TODO()
-/* {
+/*{
     val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
     val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
     for (i in 0 until roman.length - 1) {
         if (arab[rom.indexOf()])
-    } TO-DO, TO-DO, TO-DO-TO-DO-TO-DO TO-DO TO-DOOOOOOooooooo......
+    }
 }*/
 
 /**
@@ -315,62 +309,57 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     }
     var i = 0
     try {
-        try {
-            try {
-                while (i < commands.length && steps < limit) {
-                    when (commands[i]) {
-                        '+' -> {
-                            cellsList[pos]++
-                            i++
-                        }
-                        '-' -> {
-                            cellsList[pos]--
-                            i++
-                        }
-                        '>' -> {
-                            pos++
-                            i++
-                        }
-                        '<' -> {
-                            pos--
-                            i++
-                        }
-                        ' ' -> {
-                            i++
-                        }
-                        '[' -> if (cellsList[pos] == 0) {
-                            var brCount = 1
-                            while (brCount > 0) {
-                                i++
-                                when (commands[i]) {
-                                    '[' -> brCount++
-                                    ']' -> brCount--
-                                }
-                                steps++
-                            }
-                            steps--
-                            i++
-                        } else {
-                            i++
-                            brPosList.add(i)
-                        }
-                        ']' -> if (cellsList[pos] != 0) {
-                            i = brPosList.last()
-                        } else {
-                            i++
-                            brPosList.removeAt(brPosList.size - 1)
-                        }
-                    }
-                    steps++
+        while (i < commands.length && steps < limit) {
+            when (commands[i]) {
+                '+' -> {
+                    cellsList[pos]++
+                    i++
                 }
-            } catch (e: IndexOutOfBoundsException) {
-                throw IllegalArgumentException()
+                '-' -> {
+                    cellsList[pos]--
+                    i++
+                }
+                '>' -> {
+                    pos++
+                    i++
+                }
+                '<' -> {
+                    pos--
+                    i++
+                }
+                ' ' -> {
+                    i++
+                }
+                '[' -> if (cellsList[pos] == 0) {
+                    var brCount = 1
+                    while (brCount > 0) {
+                        i++
+                        when (commands[i]) {
+                            '[' -> brCount++
+                            ']' -> brCount--
+                        }
+                        steps++
+                    }
+                    steps--
+                    i++
+                } else {
+                    i++
+                    brPosList.add(i)
+                }
+                ']' -> if (cellsList[pos] != 0) {
+                    i = brPosList.last()
+                } else {
+                    i++
+                    brPosList.removeAt(brPosList.size - 1)
+                }
             }
-        } catch (e: ArrayIndexOutOfBoundsException) {
-            throw IllegalArgumentException()
+            steps++
         }
-    } catch (e: IllegalArgumentException) {
-        throw e
+    } catch (e: Exception) {
+        when (e) {
+            is ArrayIndexOutOfBoundsException, is IllegalArgumentException, is IndexOutOfBoundsException ->
+                throw IllegalArgumentException()
+        }
     }
     return cellsList
 }
