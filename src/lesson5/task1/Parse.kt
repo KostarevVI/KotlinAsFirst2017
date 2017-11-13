@@ -192,8 +192,7 @@ fun plusMinus(expression: String): Int {
             }
         }
     } catch (e: NumberFormatException) {
-        val newE = IllegalArgumentException()
-        throw newE
+        throw IllegalArgumentException()
     }
     return number
 }
@@ -315,10 +314,10 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         cellsList.add(0)
     }
     var i = 0
-    while (i < commands.length && steps < limit) {
+    try {
         try {
             try {
-                try {
+                while (i < commands.length && steps < limit) {
                     when (commands[i]) {
                         '+' -> {
                             cellsList[pos]++
@@ -363,17 +362,15 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                         }
                     }
                     steps++
-                } catch (e: IndexOutOfBoundsException) {
-                    val newE = IllegalArgumentException()
-                    throw newE
                 }
-            } catch (e: ArrayIndexOutOfBoundsException) {
-                val newE = IllegalArgumentException()
-                throw newE
+            } catch (e: IndexOutOfBoundsException) {
+                throw IllegalArgumentException()
             }
-        } catch (e: IllegalArgumentException) {
-            throw e
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            throw IllegalArgumentException()
         }
+    } catch (e: IllegalArgumentException) {
+        throw e
     }
     return cellsList
 }
