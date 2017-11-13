@@ -182,7 +182,7 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     val strExp = expression.split(" ")
-    var number = 0
+    var number: Int
     try {
         number = strExp[0].toInt()
         for (i in 1 until strExp.size - 1 step 2) {
@@ -219,7 +219,7 @@ fun firstDuplicateIndex(str: String): Int {
                     counter++
                 j++
             }
-            return j++
+            return j
         }
     }
     return -1
@@ -315,51 +315,56 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         cellsList.add(0)
     }
     var i = 0
-    while (i < commands.length && steps < limit) {
-        when (commands[i]) {
-            '+' -> {
-                cellsList[pos]++
-                i++
-            }
-            '-' -> {
-                cellsList[pos]--
-                i++
-            }
-            '>' -> {
-                pos++
-                i++
-            }
-            '<' -> {
-                pos--
-                i++
-            }
-            ' ' -> {
-                i++
-            }
-            '[' -> if (cellsList[pos] == 0) {
-                var brCount = 1
-                while (brCount > 0) {
+    try {
+        while (i < commands.length && steps < limit) {
+            when (commands[i]) {
+                '+' -> {
+                    cellsList[pos]++
                     i++
-                    when (commands[i]) {
-                        '[' -> brCount++
-                        ']' -> brCount--
-                    }
-                    steps++
                 }
-                steps--
-                i++
-            } else {
-                i++
-                brPosList.add(i)
+                '-' -> {
+                    cellsList[pos]--
+                    i++
+                }
+                '>' -> {
+                    pos++
+                    i++
+                }
+                '<' -> {
+                    pos--
+                    i++
+                }
+                ' ' -> {
+                    i++
+                }
+                '[' -> if (cellsList[pos] == 0) {
+                    var brCount = 1
+                    while (brCount > 0) {
+                        i++
+                        when (commands[i]) {
+                            '[' -> brCount++
+                            ']' -> brCount--
+                        }
+                        steps++
+                    }
+                    steps--
+                    i++
+                } else {
+                    i++
+                    brPosList.add(i)
+                }
+                ']' -> if (cellsList[pos] != 0) {
+                    i = brPosList.last()
+                } else {
+                    i++
+                    brPosList.removeAt(brPosList.size - 1)
+                }
             }
-            ']' -> if (cellsList[pos] != 0) {
-                i = brPosList.last()
-            } else {
-                i++
-                brPosList.removeAt(brPosList.size - 1)
-            }
+            steps++
         }
-        steps++
+    } catch (e: ArrayIndexOutOfBoundsException) {
+        val newE = IllegalArgumentException()
+        throw newE
     }
     return cellsList
 }
