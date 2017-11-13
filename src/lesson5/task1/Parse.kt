@@ -113,9 +113,9 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    return if ("[^0-9\\-()+\\s\\n]".toRegex().find(phone) != null) {
+    return if ("[^0-9\\-()+\\s]".toRegex().find(phone) != null) {
         ""
-    } else phone.filter { it !in listOf('-', ' ', '(', ')') }
+    } else phone.filter { it !in listOf('-', ' ', '(', ')', '\n') }
 }
 
 /**
@@ -256,7 +256,7 @@ fun mostExpensive(description: String): String {
  */
 fun fromRoman(roman: String): Int = TODO()
 /*{
-    val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
+ val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
     val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
     for (i in 0 until roman.length - 1) {
         if (arab[rom.indexOf()])
@@ -309,6 +309,18 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     }
     var i = 0
     try {
+        //проверка на непарные скобки
+        while (i < commands.length) {
+            when (commands[i]) {
+                '[' -> brPosList.add(i)
+                ']' -> brPosList.remove(brPosList.size - 1)
+            }
+            i++
+        }
+        if (brPosList.isNotEmpty())
+            throw IllegalStateException()
+        //основной цикл
+        i = 0
         while (i < commands.length && steps < limit) {
             when (commands[i]) {
                 '+' -> {
