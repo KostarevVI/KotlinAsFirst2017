@@ -2,7 +2,7 @@
 
 package lesson5.task1
 
-import lesson3.task1.digitNumber
+import java.lang.Math.*
 
 /**
  * Пример
@@ -267,7 +267,7 @@ fun fromRoman(roman: String): Int = TODO()
     val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
     for (i in 0 until roman.length - 1) {
         if (arab[rom.indexOf()])
-    }
+    } TO-DO, TO-DO, TO-DO-TO-DO-TO-DO TO-DO TO-DOOOOOOooooooo......
 }*/
 
 /**
@@ -306,4 +306,59 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    var i = 0
+    var steps = 0
+    var pos = floor(cells / 2.0).toInt()
+    val cellsList = mutableListOf<Int>()
+    val brPosList = mutableListOf<Int>()
+    for (i in 0 until cells)
+        cellsList.add(0)
+    while (i < commands.length && steps < limit) {
+        when (commands[i]) {
+            '+' -> {
+                cellsList[pos]++
+                i++
+            }
+            '-' -> {
+                cellsList[pos]--
+                i++
+            }
+            '>' -> {
+                pos++
+                i++
+            }
+            '<' -> {
+                pos--
+                i++
+            }
+            ' ' -> {
+                i++
+            }
+            '[' -> if (cellsList[pos] == 0) {
+                var brCount = 1
+                while (brCount > 0) {
+                    i++
+                    when (commands[i]) {
+                        '[' -> brCount++
+                        ']' -> brCount--
+                    }
+                    steps++
+                }
+                steps--
+                i++
+            } else {
+                i++
+                brPosList.add(i)
+            }
+            ']' -> if (cellsList[pos] != 0) {
+                i = brPosList.last()
+            } else {
+                i++
+                brPosList.removeAt(brPosList.size - 1)
+            }
+        }
+        steps++
+    }
+    return cellsList
+}
