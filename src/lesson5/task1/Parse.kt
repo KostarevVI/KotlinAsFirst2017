@@ -113,7 +113,7 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    return if ("[^0-9\\-()+\\s]".toRegex().find(phone) != null) {
+    return if ("[^0-9\\-()+\\s\\n]".toRegex().find(phone) != null) {
         ""
     } else phone.filter { it !in listOf('-', ' ', '(', ')') }
 }
@@ -134,9 +134,8 @@ fun bestLongJump(jumps: String): Int {
     try {
         for (i in 0 until allJumps.size)
             if (allJumps[i].trim().isNotEmpty())
-                if (allJumps[i] in listOf("a", "b", "c"))
-                    if (allJumps[i] !in listOf("-", "%") && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
-                        bestJump = allJumps[i].toInt()
+                if (allJumps[i] !in listOf("-", "%") && allJumps[i].toInt() >= 0 && allJumps[i].toInt() > bestJump)
+                    bestJump = allJumps[i].toInt()
     } catch (e: NumberFormatException) {
         return -1
     }
@@ -358,7 +357,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         }
     } catch (e: Exception) {
         when (e) {
-            is ArrayIndexOutOfBoundsException, is IllegalArgumentException, is IndexOutOfBoundsException ->
+            is ArrayIndexOutOfBoundsException, is IllegalArgumentException,
+            is IndexOutOfBoundsException, is IllegalStateException ->
                 throw IllegalStateException()
         }
     }
