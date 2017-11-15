@@ -112,10 +112,10 @@ fun dateDigitToStr(digital: String): String {
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String {
-    return if ("[^0-9\\-()+\\s]".toRegex().find(phone) != null) {
-        ""
-    } else phone.filter { it !in listOf('-', ' ', '(', ')', '\n') }
+fun flattenPhoneNumber(phone: String): String = when {
+    "[^0-9\\-()+\\s]".toRegex().find(phone) != null -> ""
+    "^+".toRegex().find(phone) != null -> phone.filter { it !in listOf('-', ' ', '(', ')', '\n') }
+    else -> ""
 }
 
 /**
@@ -205,13 +205,9 @@ fun firstDuplicateIndex(str: String): Int {
     val newStr = str.toLowerCase().split(" ")
     for (i in 0 until newStr.size - 1) {
         if (newStr[i] == newStr[i + 1]) {
-            var counter = 0
             var j = 0
-            while (counter < i) {
-                if (str[j] == ' ')
-                    counter++
-                j++
-            }
+            for (k in 0 until i)
+                j += newStr[k].length + 1
             return j
         }
     }
