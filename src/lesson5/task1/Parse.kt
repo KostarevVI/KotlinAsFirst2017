@@ -256,56 +256,58 @@ fun fromRoman(roman: String): Int {
     var i = 0
     var num: Int
     var result = 0
-    while (i <= roman.length - 1) {
-        if (roman[i].toString() in rom) {
-            when (roman[i]) {
-                'I' -> if (i < roman.length - 1) {
-                    when (roman[i + 1]) {
-                        'V' -> {
-                            num = arab[rom.indexOf(roman[i].toString()) + 1]
-                            i++
+    if (roman.isNotEmpty()) {
+        while (i <= roman.length - 1) {
+            if (roman[i].toString() in rom) {
+                when (roman[i]) {
+                    'I' -> if (i < roman.length - 1) {
+                        when (roman[i + 1]) {
+                            'V' -> {
+                                num = arab[rom.indexOf(roman[i].toString()) + 1]
+                                i++
+                            }
+                            'X' -> {
+                                num = arab[rom.indexOf(roman[i].toString()) + 3]
+                                i++
+                            }
+                            else -> num = arab[rom.indexOf(roman[i].toString())]
                         }
-                        'X' -> {
-                            num = arab[rom.indexOf(roman[i].toString()) + 3]
-                            i++
+                    } else num = arab[rom.indexOf(roman[i].toString())]
+                    'X' -> if (i < roman.length - 1) {
+                        when (roman[i + 1]) {
+                            'L' -> {
+                                num = arab[rom.indexOf(roman[i].toString()) + 1]
+                                i++
+                            }
+                            'C' -> {
+                                num = arab[rom.indexOf(roman[i].toString()) + 3]
+                                i++
+                            }
+                            else -> num = arab[rom.indexOf(roman[i].toString())]
                         }
-                        else -> num = arab[rom.indexOf(roman[i].toString())]
-                    }
-                } else num = arab[rom.indexOf(roman[i].toString())]
-                'X' -> if (i < roman.length - 1) {
-                    when (roman[i + 1]) {
-                        'L' -> {
-                            num = arab[rom.indexOf(roman[i].toString()) + 1]
-                            i++
+                    } else num = arab[rom.indexOf(roman[i].toString())]
+                    'C' -> if (i < roman.length - 1) {
+                        when (roman[i + 1]) {
+                            'D' -> {
+                                num = arab[rom.indexOf(roman[i].toString()) + 1]
+                                i++
+                            }
+                            'M' -> {
+                                num = arab[rom.indexOf(roman[i].toString()) + 3]
+                                i++
+                            }
+                            else -> num = arab[rom.indexOf(roman[i].toString())]
                         }
-                        'C' -> {
-                            num = arab[rom.indexOf(roman[i].toString()) + 3]
-                            i++
-                        }
-                        else -> num = arab[rom.indexOf(roman[i].toString())]
-                    }
-                } else num = arab[rom.indexOf(roman[i].toString())]
-                'C' -> if (i < roman.length - 1) {
-                    when (roman[i + 1]) {
-                        'D' -> {
-                            num = arab[rom.indexOf(roman[i].toString()) + 1]
-                            i++
-                        }
-                        'M' -> {
-                            num = arab[rom.indexOf(roman[i].toString()) + 3]
-                            i++
-                        }
-                        else -> num = arab[rom.indexOf(roman[i].toString())]
-                    }
-                } else num = arab[rom.indexOf(roman[i].toString())]
-                else -> num = arab[rom.indexOf(roman[i].toString())]
+                    } else num = arab[rom.indexOf(roman[i].toString())]
+                    else -> num = arab[rom.indexOf(roman[i].toString())]
+                }
+            } else {
+                return -1
             }
-        } else {
-            return -1
+            i++
+            result += num
         }
-        i++
-        result += num
-    }
+    } else return -1
     return result
 }
 
