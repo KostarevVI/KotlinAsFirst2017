@@ -350,19 +350,19 @@ fun fromRoman(roman: String): Int {
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var steps = 0
     var pos = floor(cells / 2.0).toInt()
-    val cellsList = mutableListOf<Int>()
+    val cellsList = MutableList(cells) { 0 }
     val brPosList = mutableListOf<Int>()
-    for (i in 0 until cells) {
-        cellsList.add(0)
-    }
+    var br = 0
     var i = 0
     try {
         //проверка на непарные скобки
         while (i < commands.length) {
             when (commands[i]) {
-                '[' -> brPosList.add(i)
-                ']' -> brPosList.removeAt(brPosList.size - 1)
+                '[' -> br++
+                ']' -> br--
             }
+            if (br < 0)
+                throw IllegalStateException()
             i++
         }
         if (brPosList.size > 0)
@@ -417,8 +417,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         }
     } catch (e: Exception) {
         when (e) {
-            is ArrayIndexOutOfBoundsException, is IllegalArgumentException,
-            is IndexOutOfBoundsException, is IllegalStateException ->
+            is IllegalArgumentException, is IllegalStateException ->
                 throw IllegalStateException()
         }
     }
