@@ -365,7 +365,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 throw IllegalStateException()
             i++
         }
-        if (brPosList.size > 0)
+        if (br != 0)
             throw IllegalStateException()
         //основной цикл
         i = 0
