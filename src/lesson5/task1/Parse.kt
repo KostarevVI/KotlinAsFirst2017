@@ -428,8 +428,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         }
     } catch (e: Exception) {
         when (e) {
-            is IllegalArgumentException, is IllegalStateException ->
+            is IllegalArgumentException ->
                 throw IllegalArgumentException()
+            is IllegalStateException -> throw IllegalStateException()
         }
     }
     if (brCount != 0) throw IllegalArgumentException()
