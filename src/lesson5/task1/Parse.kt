@@ -354,6 +354,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     val brPosList = mutableListOf<Int>()
     var br = 0
     var i = 0
+    var brCount = 0
     try {
         //проверка на непарные скобки
         while (i < commands.length) {
@@ -366,7 +367,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             i++
         }
         if (br != 0)
-            throw IllegalStateException()
+            throw IllegalArgumentException()
         //основной цикл
         i = 0
         while (i < commands.length && steps < limit) {
@@ -384,20 +385,20 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                     if (pos < cells)
                         i++
                     else
-                        throw IllegalStateException()
+                        throw IllegalArgumentException()
                 }
                 '<' -> {
                     pos--
                     if (pos >= 0)
                         i++
                     else
-                        throw IllegalStateException()
+                        throw IllegalArgumentException()
                 }
                 ' ' -> {
                     i++
                 }
                 '[' -> if (cellsList[pos] == 0) {
-                    var brCount = 1
+                    brCount++
                     while (brCount > 0) {
                         i++
                         when (commands[i]) {
@@ -405,6 +406,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                             ']' -> brCount--
                         }
                         steps++
+                        if (steps > limit)
+                            break
                     }
                     steps--
                     i++
@@ -427,5 +430,6 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 throw IllegalArgumentException()
         }
     }
+    if (brCount != 0) throw IllegalArgumentException()
     return cellsList
 }
