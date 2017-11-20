@@ -387,14 +387,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                     if (pos < cells)
                         i++
                     else
-                        throw IllegalArgumentException()
+                        throw IllegalStateException()
                 }
                 '<' -> {
                     pos--
                     if (pos >= 0)
                         i++
                     else
-                        throw IllegalArgumentException()
+                        throw IllegalStateException()
                 }
                 ' ' -> {
                     i++
