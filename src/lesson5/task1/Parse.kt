@@ -402,6 +402,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 brCount++
                 while (brCount > 0) {
                     i++
+                    steps++
                     when (commands[i]) {
                         '[' -> brCount++
                         ']' -> brCount--
@@ -409,7 +410,6 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                     if (steps > limit)
                         break
                 }
-                steps--
                 i++
             } else {
                 i++
@@ -425,5 +425,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         }
         steps++
     }
+    /*if(cellsList[floor(cells / 2.0).toInt()]>0)
+        cellsList[floor(cells / 2.0).toInt()]--
+    if (cellsList[floor(cells / 2.0).toInt()]<0)
+        cellsList[floor(cells / 2.0).toInt()]++*/
     return cellsList
 }
