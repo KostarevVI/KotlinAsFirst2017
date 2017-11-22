@@ -407,27 +407,23 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                         '[' -> brCount++
                         ']' -> brCount--
                     }
-                    if (steps > limit)
+                    if (steps >= limit)
                         break
                 }
                 i++
+                steps--
             } else {
                 i++
                 brPosList.add(i)
             }
-            ']' -> if (cellsList[pos] != 0) {
+            ']' -> if (cellsList[pos] != 0 && steps <= limit) {
                 i = brPosList.last()
             } else {
-                steps++
                 i++
                 brPosList.removeAt(brPosList.size - 1)
             }
         }
         steps++
     }
-    /*if(cellsList[floor(cells / 2.0).toInt()]>0)
-        cellsList[floor(cells / 2.0).toInt()]--
-    if (cellsList[floor(cells / 2.0).toInt()]<0)
-        cellsList[floor(cells / 2.0).toInt()]++*/
     return cellsList
 }
