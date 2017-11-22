@@ -357,82 +357,73 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var br = 0
     var i = 0
     var brCount = 0
-    try {
-        //проверка на непарные скобки
-        while (i < commands.length) {
-            when (commands[i]) {
-                '[' -> br++
-                ']' -> br--
-            }
-            if (br < 0)
-                throw IllegalArgumentException()
-            i++
+    //проверка на непарные скобки
+    while (i < commands.length) {
+        when (commands[i]) {
+            '[' -> br++
+            ']' -> br--
         }
-        if (br != 0)
+        if (br < 0)
             throw IllegalArgumentException()
-        //основной цикл
-        i = 0
-        while (i < commands.length && steps < limit) {
-            when (commands[i]) {
-                '+' -> {
-                    cellsList[pos]++
-                    i++
-                }
-                '-' -> {
-                    cellsList[pos]--
-                    i++
-                }
-                '>' -> {
-                    pos++
-                    if (pos < cells)
-                        i++
-                    else
-                        throw IllegalStateException()
-                }
-                '<' -> {
-                    pos--
-                    if (pos >= 0)
-                        i++
-                    else
-                        throw IllegalStateException()
-                }
-                ' ' -> {
-                    i++
-                }
-                '[' -> if (cellsList[pos] == 0) {
-                    brCount++
-                    while (brCount > 0) {
-                        i++
-                        when (commands[i]) {
-                            '[' -> brCount++
-                            ']' -> brCount--
-                        }
-                        steps++
-                        if (steps > limit)
-                            break
-                    }
-                    steps--
-                    i++
-                } else {
-                    i++
-                    brPosList.add(i)
-                }
-                ']' -> if (cellsList[pos] != 0) {
-                    i = brPosList.last()
-                } else {
-                    i++
-                    brPosList.removeAt(brPosList.size - 1)
-                }
-            }
-            steps++
-        }
-    } catch (e: Exception) {
-        when (e) {
-            is IllegalArgumentException ->
-                throw IllegalArgumentException()
-            is IllegalStateException -> throw IllegalStateException()
-        }
+        i++
     }
-    if (brCount != 0) throw IllegalArgumentException()
+    if (br != 0)
+        throw IllegalArgumentException()
+    //основной цикл
+    i = 0
+    while (i < commands.length && steps < limit) {
+        when (commands[i]) {
+            '+' -> {
+                cellsList[pos]++
+                i++
+            }
+            '-' -> {
+                cellsList[pos]--
+                i++
+            }
+            '>' -> {
+                pos++
+                if (pos < cells)
+                    i++
+                else
+                    throw IllegalStateException()
+            }
+            '<' -> {
+                pos--
+                if (pos >= 0)
+                    i++
+                else
+                    throw IllegalStateException()
+            }
+            ' ' -> {
+                i++
+            }
+            '[' -> if (cellsList[pos] == 0) {
+                brCount++
+                while (brCount > 0) {
+                    i++
+                    when (commands[i]) {
+                        '[' -> brCount++
+                        ']' -> brCount--
+                    }
+                    if (steps > limit)
+                        break
+                }
+                steps--
+                i++
+            } else {
+                i++
+                brPosList.add(i)
+            }
+            ']' -> if (cellsList[pos] != 0) {
+                i = brPosList.last()
+            } else {
+                steps++
+                i++
+                brPosList.removeAt(brPosList.size - 1)
+            }
+        }
+        steps++
+    }
     return cellsList
 }
