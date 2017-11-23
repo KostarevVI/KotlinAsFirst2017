@@ -253,64 +253,24 @@ fun mostExpensive(description: String): String {
  * Вернуть -1, если roman не является корректным римским числом
  */
 fun fromRoman(roman: String): Int {
-    val rom = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
-    val arab = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
+    val longMap = mapOf("IV" to 4, "IX" to 9, "XL" to 40, "XC" to 90, "CD" to 400, "CM" to 900)
+    val shortMap = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
+    var romNum = 0
+    for (i in 0 until roman.length)
+        if (roman[i] !in shortMap)
+            return -1
     var i = 0
-    var num: Int
-    var result = 0
-    if (roman.isNotEmpty()) {
-        while (i <= roman.length - 1) {
-            if (roman[i].toString() in rom) {
-                when (roman[i]) {
-                    'I' -> if (i < roman.length - 1) {
-                        when (roman[i + 1]) {
-                            'V' -> {
-                                num = arab[rom.indexOf(roman[i].toString()) + 1]
-                                i++
-                            }
-                            'X' -> {
-                                num = arab[rom.indexOf(roman[i].toString()) + 3]
-                                i++
-                            }
-                            else -> num = arab[rom.indexOf(roman[i].toString())]
-                        }
-                    } else num = arab[rom.indexOf(roman[i].toString())]
-                    'X' -> if (i < roman.length - 1) {
-                        when (roman[i + 1]) {
-                            'L' -> {
-                                num = arab[rom.indexOf(roman[i].toString()) + 1]
-                                i++
-                            }
-                            'C' -> {
-                                num = arab[rom.indexOf(roman[i].toString()) + 3]
-                                i++
-                            }
-                            else -> num = arab[rom.indexOf(roman[i].toString())]
-                        }
-                    } else num = arab[rom.indexOf(roman[i].toString())]
-                    'C' -> if (i < roman.length - 1) {
-                        when (roman[i + 1]) {
-                            'D' -> {
-                                num = arab[rom.indexOf(roman[i].toString()) + 1]
-                                i++
-                            }
-                            'M' -> {
-                                num = arab[rom.indexOf(roman[i].toString()) + 3]
-                                i++
-                            }
-                            else -> num = arab[rom.indexOf(roman[i].toString())]
-                        }
-                    } else num = arab[rom.indexOf(roman[i].toString())]
-                    else -> num = arab[rom.indexOf(roman[i].toString())]
-                }
-            } else {
-                return -1
-            }
+    while (i < roman.length) {
+        if (i + 1 < roman.length && roman.substring(i, i + 2) in longMap) {
+            romNum += longMap.getValue(roman.substring(i, i + 2))
+            i += 2
+        } else {
+            romNum += shortMap.getValue(roman[i])
             i++
-            result += num
         }
-    } else return -1
-    return result
+    }
+    return if (i == 0) -1
+    else romNum
 }
 
 /**
