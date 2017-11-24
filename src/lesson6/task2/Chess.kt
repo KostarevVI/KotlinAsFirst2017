@@ -129,7 +129,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
         return when {
             start == end -> 0
             (start.column + end.column) % 2 != (start.row + end.row) % 2 -> -1
-            abs(start.column - end.column) == abs(start.row - end.row) || start.column + end.column == start.row + end.row -> 1
+            abs(start.column - end.column) == abs(start.row - end.row) -> 1
             else -> 2
         }
     else throw IllegalArgumentException()
