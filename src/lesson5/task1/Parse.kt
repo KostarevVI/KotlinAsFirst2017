@@ -310,13 +310,10 @@ fun fromRoman(roman: String): Int {
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    var steps = 0
-    var pos = floor(cells / 2.0).toInt()
+    var pos = cells / 2
     val cellsList = MutableList(cells) { 0 }
-    val brPosList = mutableListOf<Int>()
     var br = 0
     var i = 0
-    var brCount = 0
     //проверка на непарные скобки
     while (i < commands.length) {
         when (commands[i]) {
@@ -331,7 +328,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         throw IllegalArgumentException()
     //основной цикл
     i = 0
-    while (i < commands.length && steps < limit) {
+    for (j in 0 until limit) {
+        if (i >= commands.length)
+            break
         when (commands[i]) {
             '+' -> {
                 cellsList[pos]++
@@ -358,32 +357,43 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             ' ' -> {
                 i++
             }
-            '[' -> if (cellsList[pos] == 0) {
-                brCount++
-                while (brCount > 0) {
+            '[' -> {
+                if (cellsList[pos] != 0) {
                     i++
-                    steps++
-                    when (commands[i]) {
-                        '[' -> brCount++
-                        ']' -> brCount--
+                } else {
+                    var count = 0
+                    for (newI in i + 1..commands.length) {
+                        if (commands[newI] == '[')
+                            count++
+                        if (commands[newI] == ']' && count == 0) {
+                            if (cellsList[pos] == 0)
+                                i = newI + 1
+                            break
+                        }
+                        if (commands[newI] == ']')
+                            count--
                     }
-                    if (steps >= limit)
-                        break
                 }
-                i++
-                steps--
-            } else {
-                i++
-                brPosList.add(i)
             }
-            ']' -> if (cellsList[pos] != 0 && steps <= limit) {
-                i = brPosList.last()
-            } else {
-                i++
-                brPosList.removeAt(brPosList.size - 1)
+            ']' -> {
+                if (cellsList[pos] == 0) {
+                    i++
+                } else {
+                    var count = 0
+                    for (newI in i - 1 downTo -1) {
+                        if (commands[newI] == ']')
+                            count++
+                        if (commands[newI] == '[' && count == 0) {
+                            i = newI + 1
+                            break
+                        }
+                        if (commands[newI] == '[')
+                            count--
+                    }
+                }
             }
+            else -> throw IllegalArgumentException()
         }
-        steps++
     }
     return cellsList
 }
