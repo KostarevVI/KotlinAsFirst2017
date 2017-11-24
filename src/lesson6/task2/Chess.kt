@@ -1,5 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson6.task2
+
+import java.lang.Math.*
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -21,7 +24,13 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String {
+        return if (column in 1..8 && row in 1..8) {
+            val newCol = 'a' - 1 + column
+            val newRow = row
+            "$newCol$newRow"
+        } else ""
+    }
 }
 
 /**
@@ -31,7 +40,13 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    if (notation.length == 2 && notation[0] in 'a'..'h' && notation[1] in '1'..'8') {
+        val newCol = notation[0].toInt() - 'a'.toInt() + 1
+        val newRow = notation[1].toInt() - '0'.toInt()
+        return Square(newCol, newRow)
+    } else throw IllegalArgumentException()
+}
 
 /**
  * Простая
@@ -56,7 +71,15 @@ fun square(notation: String): Square = TODO()
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int = TODO()
+fun rookMoveNumber(start: Square, end: Square): Int {
+    if (start.column in 1..8 && start.row in 1..8 && end.column in 1..8 && end.row in 1..8)
+        return when {
+            start == end -> 0
+            start.column == end.column || start.row == end.row -> 1
+            else -> 2
+        }
+    else throw IllegalArgumentException()
+}
 
 /**
  * Средняя
@@ -72,7 +95,11 @@ fun rookMoveNumber(start: Square, end: Square): Int = TODO()
  *          rookTrajectory(Square(3, 5), Square(8, 5)) = listOf(Square(3, 5), Square(8, 5))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun rookTrajectory(start: Square, end: Square): List<Square> = when {
+    start == end -> listOf(start)
+    start.column == end.column || start.row == end.row -> listOf(start, end)
+    else -> listOf(start, Square(end.column, start.row), end)
+}
 
 /**
  * Простая
@@ -97,7 +124,16 @@ fun rookTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Примеры: bishopMoveNumber(Square(3, 1), Square(6, 3)) = -1; bishopMoveNumber(Square(3, 1), Square(3, 7)) = 2.
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
-fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
+fun bishopMoveNumber(start: Square, end: Square): Int {
+    if (start.column in 1..8 && start.row in 1..8 && end.column in 1..8 && end.row in 1..8)
+        return when {
+            start == end -> 0
+            (start.column + end.column) % 2 != (start.row + end.row) % 2 -> -1
+            abs(start.column - end.column) == abs(start.row - end.row) || start.column + end.column == start.row + end.row -> 1
+            else -> 2
+        }
+    else throw IllegalArgumentException()
+}
 
 /**
  * Сложная
@@ -118,6 +154,22 @@ fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+/*{
+    when {
+        start == end -> listOf(start)
+        (start.column + end.column) % 2 != (start.row + end.row) % 2 -> listOf<Square>()
+        abs(start.column - end.column) == abs(start.row - end.row) || start.column + end.column == start.row + end.row -> listOf(start, end)
+        else -> {
+            var newCol = start.column
+            var newRow = start.row
+            while (abs(newCol - end.column) == abs(newRow - end.row) || newCol + end.column == newRow + end.row) {
+                if(newCol<end.column)
+
+            }
+            listOf(start, Square(newCol, newRow), end)
+        }
+    }
+}*/
 
 /**
  * Средняя
