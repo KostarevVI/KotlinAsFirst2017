@@ -158,8 +158,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
 fun bishopTrajectory(start: Square, end: Square): List<Square> = when {
     start == end -> listOf(start)
     (start.column + end.column) % 2 != (start.row + end.row) % 2 -> listOf<Square>()
-    abs(start.column - end.column) == abs(start.row - end.row) || start.column + end.column == start.row + end.row ->
-        listOf(start, end)
+    abs(end.column - start.column) == abs(end.row - start.row) -> listOf(start, end)
     else -> {
         val firstCol = (start.column + start.row + end.column - end.row) / 2
         val firstRow = (start.row + start.column + end.row - end.column) / 2
@@ -193,12 +192,14 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> = when {
  * Пример: kingMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Король может последовательно пройти через клетки (4, 2) и (5, 2) к клетке (6, 3).
  */
-fun kingMoveNumber(start: Square, end: Square): Int {
-    return if (abs(start.column - end.column) <= abs(start.row - end.row))
+fun kingMoveNumber(start: Square, end: Square): Int = if (start.inside() && end.inside()) {
+    if (abs(start.column - end.column) <= abs(start.row - end.row))
         abs(start.row - end.row)
     else {
         abs(start.column - end.column)
     }
+} else {
+    throw IllegalArgumentException()
 }
 
 /**
