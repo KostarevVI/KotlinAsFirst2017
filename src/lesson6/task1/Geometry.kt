@@ -76,9 +76,8 @@ data class Circle(val center: Point, val radius: Double) {
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
     fun distance(other: Circle): Double {
-        val dis = sqrt(sqr(center.x - other.center.x) + sqr(center.y - other.center.y)) - radius - other.radius
-        return if (dis < 0) 0.0
-        else dis
+        val dis = center.distance(other.center) - radius - other.radius
+        return if (dis < 0) 0.0 else dis
     }
 
     /**
@@ -98,6 +97,11 @@ data class Segment(val begin: Point, val end: Point) {
 
     override fun hashCode() =
             begin.hashCode() + end.hashCode()
+
+    fun midPoint(diameter: Segment): Point =
+            Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2)
+
+    fun halfDiam(diameter: Segment): Double = diameter.begin.distance(diameter.end) / 2
 }
 
 /**
@@ -110,10 +114,10 @@ fun diameter(vararg points: Point): Segment {
     if (points.size < 2)
         throw IllegalArgumentException()
     var maxSeg = Segment(points[0], points[1])
-    for (first in points)
-        for (second in points)
-            if (maxSeg.begin.distance(maxSeg.end) < first.distance(second))
-                maxSeg = Segment(first, second)
+    for (i in 0 until points.size)
+        for (j in i until points.size)
+            if (maxSeg.begin.distance(maxSeg.end) < points[i].distance(points[j]))
+                maxSeg = Segment(points[i], points[j])
     return maxSeg
 }
 
@@ -124,8 +128,7 @@ fun diameter(vararg points: Point): Segment {
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
 fun circleByDiameter(diameter: Segment): Circle =
-        Circle(Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2),
-                diameter.begin.distance(diameter.end) / 2)
+        Circle(diameter.midPoint(diameter), diameter.halfDiam(diameter))
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
