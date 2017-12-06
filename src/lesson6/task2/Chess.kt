@@ -26,7 +26,9 @@ data class Square(val column: Int, val row: Int) {
      */
     fun notation(): String = if (inside()) {
         ('a' - 1 + column).toString() + row
-    } else ""
+    } else {
+        ""
+    }
 }
 
 /**
@@ -70,13 +72,13 @@ fun square(notation: String): Square {
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
 fun rookMoveNumber(start: Square, end: Square): Int {
-    if (start.inside() && end.inside())
+    if (start.inside() && end.inside()) {
         return when {
             start == end -> 0
             start.column == end.column || start.row == end.row -> 1
             else -> 2
         }
-    else {
+    } else {
         throw IllegalArgumentException()
     }
 }
@@ -125,14 +127,14 @@ fun rookTrajectory(start: Square, end: Square): List<Square> = when {
  * Слон может пройти через клетку (6, 4) к клетке (3, 7).
  */
 fun bishopMoveNumber(start: Square, end: Square): Int {
-    if (start.inside() && end.inside())
+    if (start.inside() && end.inside()) {
         return when {
             start == end -> 0
             (start.column + end.column) % 2 != (start.row + end.row) % 2 -> -1
             abs(start.column - end.column) == abs(start.row - end.row) -> 1
             else -> 2
         }
-    else {
+    } else {
         throw IllegalArgumentException()
     }
 }
