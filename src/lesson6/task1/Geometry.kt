@@ -115,9 +115,11 @@ fun diameter(vararg points: Point): Segment {
         throw IllegalArgumentException()
     var maxSeg = Segment(points[0], points[1])
     for (i in 0 until points.size)
-        for (j in i + 1 until points.size)
-            if (maxSeg.begin.distance(maxSeg.end) < points[i].distance(points[j]))
-                maxSeg = Segment(points[i], points[j])
+        for (j in i + 1 until points.size) {
+            val newSegment = Segment(points[i], points[j])
+            if (maxSeg.halfDiam() < newSegment.halfDiam())
+                maxSeg = newSegment
+        }
     return maxSeg
 }
 
@@ -242,5 +244,42 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
  */
-fun minContainingCircle(vararg points: Point): Circle = TODO()
+
+fun minContainingCircle(vararg points: Point): Circle {
+    if (points.isEmpty()) throw IllegalArgumentException()
+    if (points.size == 1) return Circle(points[0], 0.0)
+    if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
+    var minDist = points[0].distance(points[1])
+    var circle = Circle(Point(0.0, 0.0), 0.0)
+    var isInside: Boolean
+    for (i in 0 until points.size) {
+        for (j in i + 1 until points.size) {
+            val newCircle = circleByDiameter(Segment(points[i], points[j]))
+            isInside = true
+            for (point in points)
+                if (!newCircle.contains(point))
+                    isInside = false
+            if (isInside && newCircle.radius <= minDist) {
+                circle = newCircle
+                minDist = newCircle.radius
+            }
+        }
+    }
+    for (i in 0 until points.size) {
+        for (j in i + 1 until points.size) {
+            for (k in j + 1 until points.size) {
+                val newCircle = circleByThreePoints(points[i], points[j], points[k])
+                isInside = true
+                for (point in points)
+                    if (!newCircle.contains(point))
+                        isInside = false
+                if (isInside && newCircle.radius <= minDist) {
+                    circle = newCircle
+                    minDist = newCircle.radius
+                }
+            }
+        }
+    }
+    return circle
+}
 
