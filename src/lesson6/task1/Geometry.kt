@@ -251,25 +251,26 @@ fun minContainingCircle(vararg points: Point): Circle {
     if (points.size == 1) return Circle(points[0], 0.0)
     if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
     var minDist = points[0].distance(points[1])
-    var circle = Circle(Point(0.0, 0.0), 0.0)
+    var circle = Circle(points[0], points[0].distance(points[1]))
     var isInside: Boolean
-    for (i in 0 until points.size) {
-        for (j in i + 1 until points.size) {
-            val newCircle = circleByDiameter(Segment(points[i], points[j]))
-            isInside = true
-            for (point in points)
-                if (!newCircle.contains(point))
-                    isInside = false
-            if (isInside && newCircle.radius <= minDist) {
-                circle = newCircle
-                minDist = newCircle.radius
-            }
-        }
-    }
-    for (i in 0 until points.size) {
-        for (j in i + 1 until points.size) {
-            for (k in j + 1 until points.size) {
-                val newCircle = circleByThreePoints(points[i], points[j], points[k])
+    for (i in 0 until points.size)
+        for (j in i + 1 until points.size)
+            for (k in j + 1 until points.size)
+                if (i != j && j != k && i != k) {
+                    val newCircle = circleByThreePoints(points[i], points[j], points[k])
+                    isInside = true
+                    for (point in points)
+                        if (!newCircle.contains(point))
+                            isInside = false
+                    if (isInside && newCircle.radius <= minDist) {
+                        circle = newCircle
+                        minDist = newCircle.radius
+                    }
+                }
+    for (i in 0 until points.size)
+        for (j in i + 1 until points.size)
+            if (i != j) {
+                val newCircle = circleByDiameter(Segment(points[i], points[j]))
                 isInside = true
                 for (point in points)
                     if (!newCircle.contains(point))
@@ -279,8 +280,6 @@ fun minContainingCircle(vararg points: Point): Circle {
                     minDist = newCircle.radius
                 }
             }
-        }
-    }
     return circle
 }
 
