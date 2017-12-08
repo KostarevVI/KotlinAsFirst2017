@@ -98,10 +98,11 @@ data class Segment(val begin: Point, val end: Point) {
     override fun hashCode() =
             begin.hashCode() + end.hashCode()
 
-    fun midPoint(): Point =
+    fun midPoint()
+            : Point =
             Point((this.begin.x + this.end.x) / 2, (this.begin.y + this.end.y) / 2)
 
-    fun halfDiam(): Double = this.begin.distance(this.end) / 2
+    fun halfDiam(): Double = abs(this.begin.distance(this.end) / 2)
 }
 
 /**
