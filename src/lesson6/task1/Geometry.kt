@@ -244,7 +244,7 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
  * Примечание: в зависимости от ситуации, такая окружность может либо проходить через какие-либо
  * три точки данного множества, либо иметь своим диаметром отрезок,
  * соединяющий две самые удалённые точки в данном множестве.
- */
+ **/
 
 fun minContainingCircle(vararg points: Point): Circle {
     if (points.isEmpty()) throw IllegalArgumentException()
