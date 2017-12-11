@@ -250,7 +250,7 @@ fun minContainingCircle(vararg points: Point): Circle {
     if (points.isEmpty()) throw IllegalArgumentException()
     if (points.size == 1) return Circle(points[0], 0.0)
     if (points.size == 2) return circleByDiameter(Segment(points[0], points[1]))
-    var minDist = points[0].distance(points[1])
+    var minDist = Double.MAX_VALUE
     var circle = Circle(points[0], points[0].distance(points[1]))
     var isInside: Boolean
     for (i in 0 until points.size)
