@@ -159,7 +159,7 @@ fun bishopMoveNumber(start: Square, end: Square): Int {
  */
 fun bishopTrajectory(start: Square, end: Square): List<Square> = when {
     start == end -> listOf(start)
-    (start.column + end.column) % 2 != (start.row + end.row) % 2 -> listOf<Square>()
+    (start.column + end.column) % 2 != (start.row + end.row) % 2 -> listOf()
     abs(end.column - start.column) == abs(end.row - start.row) -> listOf(start, end)
     else -> {
         val firstCol = (start.column + start.row + end.column - end.row) / 2

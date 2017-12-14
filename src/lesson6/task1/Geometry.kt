@@ -255,24 +255,23 @@ fun minContainingCircle(vararg points: Point): Circle {
     var isInside: Boolean
     for (i in 0 until points.size)
         for (j in i + 1 until points.size)
-            for (k in j + 1 until points.size)
-                if (i != j && j != k && i != k) {
-                    val newCircle = circleByThreePoints(points[i], points[j], points[k])
-                    isInside = true
-                    for (point in points)
-                        if (!newCircle.contains(point))
-                            isInside = false
-                    if (isInside && newCircle.radius <= minDist) {
-                        circle = newCircle
-                        minDist = newCircle.radius
-                    }
+            for (k in j + 1 until points.size) {
+                val newCircle = circleByThreePoints(points[i], points[j], points[k])
+                isInside = true
+                for (point in points)
+                    if (!newCircle.contains(point) && !(point == points[i] || point == points[j] || point == points[k]))
+                        isInside = false
+                if (isInside && newCircle.radius <= minDist) {
+                    circle = newCircle
+                    minDist = newCircle.radius
                 }
+            }
     for (i in 0 until points.size)
         for (j in i + 1 until points.size) {
             val newCircle = circleByDiameter(Segment(points[i], points[j]))
             isInside = true
             for (point in points)
-                if (!newCircle.contains(point))
+                if (!newCircle.contains(point) && !(point == points[i] || point == points[j]))
                     isInside = false
             if (isInside && newCircle.radius <= minDist) {
                 circle = newCircle
