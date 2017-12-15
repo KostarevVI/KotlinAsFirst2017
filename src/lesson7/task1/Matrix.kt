@@ -32,6 +32,20 @@ interface Matrix<E> {
     operator fun set(row: Int, column: Int, value: E)
 
     operator fun set(cell: Cell, value: E)
+
+    fun find(target: Int): Cell {
+        for (i in 0 until this.height)
+            for (j in 0 until this.width)
+                if (this[i, j] == target)
+                    return Cell(i, j)
+        throw IllegalStateException()
+    }
+
+    fun swap(first:Cell,second:Cell){
+        val firstNum = this[first]
+        this[first] = this[second]
+        this[second] = firstNum
+    }
 }
 
 /**

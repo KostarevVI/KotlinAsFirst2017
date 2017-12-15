@@ -2,6 +2,7 @@
 
 package lesson7.task2
 
+import lesson7.task1.Cell
 import lesson7.task1.Matrix
 import lesson7.task1.createMatrix
 
@@ -238,7 +239,12 @@ fun canOpenLock(key: Matrix<Int>, lock: Matrix<Int>): Triple<Boolean, Int, Int> 
  * Инвертировать заданную матрицу.
  * При инвертировании знак каждого элемента матрицы следует заменить на обратный
  */
-operator fun Matrix<Int>.unaryMinus(): Matrix<Int> = TODO(this.toString())
+operator fun Matrix<Int>.unaryMinus(): Matrix<Int> {
+    for (i in 0 until this.height)
+        for (j in 0 until this.width)
+            this[i, j] = this[i, j] * (-1)
+    return this
+}
 
 /**
  * Средняя
@@ -277,7 +283,21 @@ operator fun Matrix<Int>.times(other: Matrix<Int>): Matrix<Int> = TODO(this.toSt
  * 0  4 13  6
  * 3 10 11  8
  */
-fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> = TODO()
+
+fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
+    for (move in moves) {
+        val curCell = matrix.find(move)
+        val zeroCell = when {
+            curCell.column + 1 < matrix.width && matrix[curCell.row, curCell.column + 1] == 0 -> Cell(curCell.row, curCell.column + 1)
+            curCell.row + 1 < matrix.height && matrix[curCell.row + 1, curCell.column] == 0 -> Cell(curCell.row + 1, curCell.column)
+            curCell.column - 1 >= 0 && matrix[curCell.row, curCell.column - 1] == 0 -> Cell(curCell.row, curCell.column - 1)
+            curCell.row - 1 >= 0 && matrix[curCell.row - 1, curCell.column] == 0 -> Cell(curCell.row - 1, curCell.column)
+            else -> throw IllegalStateException()
+        }
+        matrix.swap(curCell, zeroCell)
+    }
+    return matrix
+}
 
 /**
  * Очень сложная
