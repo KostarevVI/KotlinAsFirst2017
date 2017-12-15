@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson7.task2
 
 import lesson7.task1.Matrix
@@ -59,7 +60,40 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  * 10 11 12  5
  *  9  8  7  6
  */
-fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSpiral(height: Int, width: Int): Matrix<Int> {
+    var curColumn = 0
+    var curRow = 0
+    var number = 1
+    var dec = 1
+    val result = createMatrix(height, width, 0)
+    result[0, 0] = number
+    while (number < height * width) {
+        while (curColumn < width - dec) {
+            curColumn++
+            number++
+            result[curRow, curColumn] = number
+        }
+        while (curRow < height - dec) {
+            curRow++
+            number++
+            result[curRow, curColumn] = number
+        }
+        if(number >= height * width)
+            break
+        while (curColumn > dec - 1) {
+            curColumn--
+            number++
+            result[curRow, curColumn] = number
+        }
+        while (curRow > dec) {
+            curRow--
+            number++
+            result[curRow, curColumn] = number
+            dec++
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -75,7 +109,17 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int>{
+    val result = createMatrix(height, width, 0)
+    for (i in 1..(height + 1) / 2) {
+        for (j in i - 1..width - i) {
+            result[i - 1, j] = i
+            result[height - i, j] = i
+        }
+    }
+    println(result)
+    return result
+}
 
 /**
  * Сложная
