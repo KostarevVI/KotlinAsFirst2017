@@ -67,30 +67,29 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
     var dec = 1
     val result = createMatrix(height, width, 0)
     result[0, 0] = number
-    while (number < height * width) {
-        while (curColumn < width - dec) {
+    val maxNumber = height * width
+    while (number < maxNumber) {
+        while (curColumn < width - dec && number < maxNumber) {
             curColumn++
             number++
             result[curRow, curColumn] = number
         }
-        while (curRow < height - dec) {
+        while (curRow < height - dec && number < maxNumber) {
             curRow++
             number++
             result[curRow, curColumn] = number
         }
-        if(number >= height * width)
-            break
-        while (curColumn > dec - 1) {
+        while (curColumn > dec - 1 && number < maxNumber) {
             curColumn--
             number++
             result[curRow, curColumn] = number
         }
-        while (curRow > dec) {
+        while (curRow > dec && number < maxNumber) {
             curRow--
             number++
             result[curRow, curColumn] = number
-            dec++
         }
+        dec++
     }
     return result
 }
@@ -109,17 +108,7 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int>{
-    val result = createMatrix(height, width, 0)
-    for (i in 1..(height + 1) / 2) {
-        for (j in i - 1..width - i) {
-            result[i - 1, j] = i
-            result[height - i, j] = i
-        }
-    }
-    println(result)
-    return result
-}
+fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
 
 /**
  * Сложная
