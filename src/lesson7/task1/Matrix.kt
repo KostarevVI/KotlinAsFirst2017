@@ -41,7 +41,7 @@ interface Matrix<E> {
         throw IllegalStateException()
     }
 
-    fun swap(first:Cell,second:Cell){
+    fun swap(first: Cell, second: Cell) {
         val firstNum = this[first]
         this[first] = this[second]
         this[second] = firstNum
@@ -89,13 +89,8 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
         set(cell.row, cell.column, value)
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (other is MatrixImpl<*> && height == other.height && width == other.width) {
-            if (map != other.map) return false
-            return true
-        }
-        return false
-    }
+    override fun equals(other: Any?): Boolean =
+            other is MatrixImpl<*> && height == other.height && width == other.width && map == other.map
 
     override fun hashCode(): Int {
         var result = height

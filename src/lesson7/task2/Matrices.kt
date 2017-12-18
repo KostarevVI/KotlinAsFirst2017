@@ -288,10 +288,14 @@ fun fifteenGameMoves(matrix: Matrix<Int>, moves: List<Int>): Matrix<Int> {
     for (move in moves) {
         val curCell = matrix.find(move)
         val zeroCell = when {
-            curCell.column + 1 < matrix.width && matrix[curCell.row, curCell.column + 1] == 0 -> Cell(curCell.row, curCell.column + 1)
-            curCell.row + 1 < matrix.height && matrix[curCell.row + 1, curCell.column] == 0 -> Cell(curCell.row + 1, curCell.column)
-            curCell.column - 1 >= 0 && matrix[curCell.row, curCell.column - 1] == 0 -> Cell(curCell.row, curCell.column - 1)
-            curCell.row - 1 >= 0 && matrix[curCell.row - 1, curCell.column] == 0 -> Cell(curCell.row - 1, curCell.column)
+            curCell.column + 1 < matrix.width && matrix[curCell.row, curCell.column + 1] == 0 ->
+                Cell(curCell.row, curCell.column + 1)
+            curCell.row + 1 < matrix.height && matrix[curCell.row + 1, curCell.column] == 0 ->
+                Cell(curCell.row + 1, curCell.column)
+            curCell.column - 1 >= 0 && matrix[curCell.row, curCell.column - 1] == 0 ->
+                Cell(curCell.row, curCell.column - 1)
+            curCell.row - 1 >= 0 && matrix[curCell.row - 1, curCell.column] == 0 ->
+                Cell(curCell.row - 1, curCell.column)
             else -> throw IllegalStateException()
         }
         matrix.swap(curCell, zeroCell)
